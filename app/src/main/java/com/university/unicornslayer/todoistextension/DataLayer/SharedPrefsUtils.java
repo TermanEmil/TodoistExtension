@@ -12,8 +12,8 @@ public class SharedPrefsUtils extends ContextWrapper {
     private SharedPreferences mSharedPreferences = null;
     private SharedPreferences.Editor mSharedPreferencesEditor = null;
 
-    public SharedPrefsUtils(Context base) {
-        super(base);
+    public SharedPrefsUtils(Context context) {
+        super(context);
     }
 
     public SharedPreferences getSharedPreferences() {
@@ -36,6 +36,18 @@ public class SharedPrefsUtils extends ContextWrapper {
 
     public void setToken(String token) {
         this.getSharedPreferencesEditor().putString("token", token);
+    }
+
+    public int getMinsRemindBeforeDue() {
+        return this.getSharedPreferences().getInt("minsRemindBeforeDue", 20);
+    }
+
+    public int getSecRemindAtDue() {
+        return this.getSharedPreferences().getInt("secRemindAtDue", 60);
+    }
+
+    public boolean getProduceSoundBeforeDue() {
+        return this.getSharedPreferences().getBoolean("produceSoundBeforeDue", false);
     }
 
     public void commitAndWait(final IOnTaskDone onDoneHandler) {

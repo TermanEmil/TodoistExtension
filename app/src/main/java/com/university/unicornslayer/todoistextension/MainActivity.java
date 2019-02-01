@@ -6,23 +6,26 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.university.unicornslayer.todoistextension.DataLayer.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.ReminderManager.ReminderManager;
 
 public class MainActivity extends AppCompatActivity {
-    private SharedPrefsUtils mSharedPrefsUtils;
+    private SharedPrefsUtils sharedPrefsUtils;
+    private ReminderManager reminderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mSharedPrefsUtils = new SharedPrefsUtils(this);
+        sharedPrefsUtils = new SharedPrefsUtils(this);
+        reminderManager = new ReminderManager(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (mSharedPrefsUtils.getToken() == null)
+        if (sharedPrefsUtils.getToken() == null)
             gotoInputToken();
     }
 
@@ -33,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private void gotoInputToken() {
         Intent intent = new Intent(this, TokenInputActivity.class);
         startActivity(intent);
+    }
+
+    public void onCheckReminders(View view) {
+        reminderManager.checkNotifications();
     }
 }

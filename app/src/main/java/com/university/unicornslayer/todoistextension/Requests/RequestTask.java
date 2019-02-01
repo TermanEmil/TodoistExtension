@@ -28,7 +28,8 @@ public class RequestTask extends AsyncTask<JSONObject, Void, RequestResult> {
 
     @Override
     protected RequestResult doInBackground(JSONObject... data) {
-        return executeRequest(data[0]);
+        RequestResult result = executeRequest(data[0]);
+        return result;
     }
 
     protected RequestResult executeRequest(JSONObject json) {
