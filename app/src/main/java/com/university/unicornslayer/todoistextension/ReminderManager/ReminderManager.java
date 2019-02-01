@@ -25,6 +25,7 @@ public class ReminderManager extends ContextWrapper {
 
     private final RemindBeforeDueAgent remindBeforeDueAgent;
     private final RemindAtDueAgent remindAtDueAgent;
+    private final RemindAfterDueAgent remindAfterDueAgent;
 
     public ReminderManager(Context context) {
         super(context);
@@ -35,6 +36,7 @@ public class ReminderManager extends ContextWrapper {
 
         remindBeforeDueAgent = new RemindBeforeDueAgent(this);
         remindAtDueAgent = new RemindAtDueAgent(this);
+        remindAfterDueAgent = new RemindAfterDueAgent(this);
     }
 
     public int checkNotifications() {
@@ -64,6 +66,7 @@ public class ReminderManager extends ContextWrapper {
         RemindersData remindersData = getRemindersData();
         remindBeforeDueAgent.createReminders(remindersData, items);
         remindAtDueAgent.createReminders(remindersData, items);
+        remindAfterDueAgent.createReminders(remindersData, items);
 
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
     }

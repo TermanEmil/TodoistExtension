@@ -58,6 +58,10 @@ public class SharedPrefsUtils extends ContextWrapper {
         return this.getSharedPreferences().getBoolean("produceSoundAtDue", true);
     }
 
+    public int getMaxNbOfRemindersToShowAfterDue() {
+        return this.getSharedPreferences().getInt("maxNbOfRemindersToShowAfterDue", 5);
+    }
+
     public void commitAndWait(final IOnTaskDone onDoneHandler) {
         final ProgressDialog spinner = new ProgressDialog(this);
         spinner.setMessage("Saving, please wait");
