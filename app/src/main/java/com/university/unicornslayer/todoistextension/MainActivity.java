@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.university.unicornslayer.todoistextension.DataLayer.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.ReminderManager.ReminderManager;
 
 public class MainActivity extends AppCompatActivity {

@@ -3,15 +3,14 @@ package com.university.unicornslayer.todoistextension;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.university.unicornslayer.todoistextension.DataLayer.IOnTaskDone;
-import com.university.unicornslayer.todoistextension.DataLayer.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.DataStuff.IOnTaskDone;
+import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.Requests.IRequestHandler;
 import com.university.unicornslayer.todoistextension.Requests.RequestResult;
 import com.university.unicornslayer.todoistextension.Requests.TodoistRequestTask;

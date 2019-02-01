@@ -1,13 +1,13 @@
 package com.university.unicornslayer.todoistextension.Utils;
 
-import com.university.unicornslayer.todoistextension.DataLayer.TodoistItem;
+import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.ReminderManager.Reminder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TodoistItemsUtils {
-    public static List<TodoistItem> filter(List<TodoistItem> items, ITodoistItemIf condition) {
+    public static List<TodoistItem> filter(List<TodoistItem> items, ITodoistItemIsGood condition) {
         List<TodoistItem> result = new ArrayList<>();
         for (TodoistItem item : items) {
             if (condition.isGood(item))
@@ -18,7 +18,7 @@ public class TodoistItemsUtils {
     }
 
     public static List<TodoistItem> extractWithDueDate(List<TodoistItem> items) {
-        return filter(items, new ITodoistItemIf() {
+        return filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
                 return item.getDueDate() != null;
@@ -31,7 +31,7 @@ public class TodoistItemsUtils {
             final long milsMin,
             final long milsMax
     ) {
-        return filter(items, new ITodoistItemIf() {
+        return filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
                 long itemDue = item.getDueDate().getTime();

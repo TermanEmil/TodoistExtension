@@ -5,4 +5,5 @@ import java.util.List;
 
 public class RemindersData {
     public List<Reminder> beforeDueReminders = new ArrayList<>();
+    public List<Reminder> atDueReminders = new ArrayList<>();
 }

@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.ContextWrapper;
 
 import com.google.gson.Gson;
-import com.university.unicornslayer.todoistextension.DataLayer.FileDataManager;
-import com.university.unicornslayer.todoistextension.DataLayer.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataLayer.TodoistItem;
+import com.university.unicornslayer.todoistextension.DataStuff.FileDataManager;
+import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
 import com.university.unicornslayer.todoistextension.Requests.TodoistItemsRequestHelper;
@@ -23,7 +23,8 @@ public class ReminderManager extends ContextWrapper {
     private final FileDataManager fileDataManager;
     private final Gson gson;
 
-    private final RemindMinsBeforeDueAgent minsBeforeDueAgent;
+    private final RemindBeforeDueAgent remindBeforeDueAgent;
+    private final RemindAtDueAgent remindAtDueAgent;
 
     public ReminderManager(Context context) {
         super(context);
@@ -31,7 +32,9 @@ public class ReminderManager extends ContextWrapper {
         sharedPrefsUtils = new SharedPrefsUtils(this);
         fileDataManager = new FileDataManager(this);
         gson = new Gson();
-        minsBeforeDueAgent = new RemindMinsBeforeDueAgent(this);
+
+        remindBeforeDueAgent = new RemindBeforeDueAgent(this);
+        remindAtDueAgent = new RemindAtDueAgent(this);
     }
 
     public int checkNotifications() {
@@ -59,7 +62,8 @@ public class ReminderManager extends ContextWrapper {
         items = TodoistItemsUtils.extractWithDueDate(items);
 
         RemindersData remindersData = getRemindersData();
-        minsBeforeDueAgent.createReminders(remindersData, items);
+        remindBeforeDueAgent.createReminders(remindersData, items);
+        remindAtDueAgent.createReminders(remindersData, items);
 
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
     }

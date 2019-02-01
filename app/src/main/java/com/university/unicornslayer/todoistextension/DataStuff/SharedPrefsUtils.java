@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.DataLayer;
+package com.university.unicornslayer.todoistextension.DataStuff;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -46,8 +46,16 @@ public class SharedPrefsUtils extends ContextWrapper {
         return this.getSharedPreferences().getInt("secRemindAtDue", 60);
     }
 
+    public int getSecDueCanBeLate() {
+        return this.getSharedPreferences().getInt("secDueCanBeLate", 60 * 5);
+    }
+
     public boolean getProduceSoundBeforeDue() {
         return this.getSharedPreferences().getBoolean("produceSoundBeforeDue", false);
+    }
+
+    public boolean getProduceSoundAtDue() {
+        return this.getSharedPreferences().getBoolean("produceSoundAtDue", true);
     }
 
     public void commitAndWait(final IOnTaskDone onDoneHandler) {

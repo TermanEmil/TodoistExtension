@@ -1,6 +1,6 @@
 package com.university.unicornslayer.todoistextension.Requests;
 
-import com.university.unicornslayer.todoistextension.DataLayer.TodoistItem;
+import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 
 import java.util.List;
 

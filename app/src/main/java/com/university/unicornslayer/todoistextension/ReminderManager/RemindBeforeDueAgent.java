@@ -1,14 +1,14 @@
 package com.university.unicornslayer.todoistextension.ReminderManager;
 
-import android.app.Notification;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 
-import com.university.unicornslayer.todoistextension.DataLayer.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataLayer.TodoistItem;
-import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIf;
+import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
+import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIsGood;
 import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
 import com.university.unicornslayer.todoistextension.Utils.TodoistNotifHelper;
 
@@ -16,13 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class RemindMinsBeforeDueAgent extends ContextWrapper {
+@SuppressLint("SimpleDateFormat")
+public class RemindBeforeDueAgent extends ContextWrapper {
     private static final SimpleDateFormat shortTimeFormat = new SimpleDateFormat("HH:mm");
 
     private final SharedPrefsUtils sharedPrefsUtils;
     private final TodoistNotifHelper notifHelper;
 
-    public RemindMinsBeforeDueAgent(Context context) {
+    public RemindBeforeDueAgent(Context context) {
         super(context);
 
         sharedPrefsUtils = new SharedPrefsUtils(this);
@@ -34,7 +35,7 @@ public class RemindMinsBeforeDueAgent extends ContextWrapper {
         final long milsMin = now.getTime() + sharedPrefsUtils.getSecRemindAtDue() * 1000;
         final long milsMax = milsMin + sharedPrefsUtils.getMinsRemindBeforeDue() * 60 * 1000;
 
-        items = TodoistItemsUtils.filter(items, new ITodoistItemIf() {
+        items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
                 long itemDue = item.getDueDate().getTime();

@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.widget.Toast;
 
-import com.university.unicornslayer.todoistextension.DataLayer.TodoistItem;
+import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.Utils.RawItemsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.util.List;
 

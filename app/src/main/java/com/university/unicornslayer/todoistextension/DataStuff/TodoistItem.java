@@ -1,10 +1,6 @@
-package com.university.unicornslayer.todoistextension.DataLayer;
+package com.university.unicornslayer.todoistextension.DataStuff;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
-
-import com.university.unicornslayer.todoistextension.ReminderManager.Reminder;
-import com.university.unicornslayer.todoistextension.Utils.TimeHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

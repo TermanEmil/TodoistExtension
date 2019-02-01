@@ -1,8 +1,6 @@
 package com.university.unicornslayer.todoistextension.ReminderManager;
 
-import android.util.Log;
-
-import com.university.unicornslayer.todoistextension.DataLayer.TodoistItem;
+import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 
 import java.util.Calendar;
 import java.util.Date;
