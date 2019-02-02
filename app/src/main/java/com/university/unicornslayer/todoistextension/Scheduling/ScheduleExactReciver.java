@@ -10,7 +10,6 @@ import com.university.unicornslayer.todoistextension.ReminderManager.ReminderMan
 public class ScheduleExactReciver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("Recived", "-------------------------------1");
         ReminderManager reminderManager = new ReminderManager(context);
         reminderManager.checkNotifications();
     }
