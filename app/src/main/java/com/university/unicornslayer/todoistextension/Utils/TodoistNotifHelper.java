@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Build;
+import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.R;
@@ -37,6 +38,16 @@ public class TodoistNotifHelper extends ContextWrapper {
         }
 
         notificationManager.notify(notifId, notif);
+    }
+
+    public boolean notifIsVisible(int notifId) {
+        StatusBarNotification[] notifications = notificationManager.getActiveNotifications();
+        for (StatusBarNotification notification : notifications) {
+            if (notification.getId() == notifId)
+                return true;
+        }
+
+        return false;
     }
 
     private void createNotificationChannel() {

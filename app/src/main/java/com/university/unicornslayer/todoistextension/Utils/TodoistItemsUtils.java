@@ -29,7 +29,7 @@ public class TodoistItemsUtils {
         });
     }
 
-    public static boolean itemMustBeRementioned(
+    public static boolean mustBeRementioned(
         HashMap<Integer, Reminder> reminders,
         TodoistItem item,
         int milsInterval,

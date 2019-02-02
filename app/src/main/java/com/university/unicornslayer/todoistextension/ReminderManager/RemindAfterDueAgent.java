@@ -1,7 +1,6 @@
 package com.university.unicornslayer.todoistextension.ReminderManager;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.support.v4.app.NotificationCompat;
@@ -41,9 +40,16 @@ public class RemindAfterDueAgent extends ContextWrapper {
         items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                return
-                    item.getDueDate().getTime() <= itsPastTimepoint &&
-                    TodoistItemsUtils.itemMustBeRementioned(remindersData.afterDueReminders, item, interval, now);
+                if (item.getDueDate().getTime() > itsPastTimepoint)
+                    return false;
+
+                if (TodoistItemsUtils.mustBeRementioned(remindersData.afterDueReminders, item, interval, now))
+                    return true;
+
+                if (notifHelper.notifIsVisible(notificationId))
+                    return remindersData.afterDueCurrentlyBeingMentioned.contains(item.getId());
+
+                return false;
             }
         });
 
@@ -55,6 +61,11 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
         for (TodoistItem item : items)
             remindersData.afterDueReminders.put(item.getId(), new Reminder(item));
+
+        // Set currently being mentioned
+        remindersData.afterDueCurrentlyBeingMentioned.clear();
+        for (TodoistItem item : items)
+            remindersData.afterDueCurrentlyBeingMentioned.add(item.getId());
     }
 
     private void sort(List<TodoistItem> items) {
