@@ -27,6 +27,9 @@ public class ReminderManager extends ContextWrapper {
     private final RemindAtDueAgent remindAtDueAgent;
     private final RemindAfterDueAgent remindAfterDueAgent;
 
+    private boolean verbose;
+    private ITodoistItemsHandler todoistItemsHandler = null;
+
     public ReminderManager(Context context) {
         super(context);
 
@@ -39,6 +42,14 @@ public class ReminderManager extends ContextWrapper {
         remindAfterDueAgent = new RemindAfterDueAgent(this);
     }
 
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
+    }
+
+    public void setTodoistItemsHandler(ITodoistItemsHandler todoistItemsHandler) {
+        this.todoistItemsHandler = todoistItemsHandler;
+    }
+
     public int checkNotifications() {
         if (sharedPrefsUtils.getToken() == null)
             return -1;
@@ -47,6 +58,8 @@ public class ReminderManager extends ContextWrapper {
             @Override
             public void onDone(List<TodoistItem> items) {
                 checkNotifications(items);
+                if (todoistItemsHandler != null)
+                    todoistItemsHandler.onDone(items);
             }
         };
 
@@ -69,6 +82,9 @@ public class ReminderManager extends ContextWrapper {
         remindAfterDueAgent.createReminders(remindersData, items);
 
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
+        TodoistItem nextClosest = TodoistItemsUtils.getNextClosestItem(items);
+
+        fileDataManager.writeToFile(getString(R.string.next_closest_item), gson.toJson(nextClosest));
     }
 
     private RemindersData getRemindersData() {

@@ -3,4 +3,6 @@
     <string name="channel_name">Todoist Notifications</string>
     <string name="channel_description">Todoist notifications</string>
     <string name="reminders_data_filename">RemindersData.json</string>
+    <string name="next_closest_item">nextClosestItem.json</string>
+    <string name="msg_when_no_tasks_in_future">No new tasks</string>
 </resources>

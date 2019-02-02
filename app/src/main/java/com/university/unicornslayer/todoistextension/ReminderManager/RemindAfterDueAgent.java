@@ -35,7 +35,7 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
         final Date now = new Date();
-        final long itsPastTimepoint = now.getTime() + sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1;
+        final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1);
         final int interval = sharedPrefsUtils.getMilsIntervalRemindAfterDue();
 
         items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
@@ -86,9 +86,7 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
         Date now = new Date();
         String firstLine = decorateContent(itemsToShow.get(0), now);
-        firstLine = firstLine
-            .replace("<b>", "").replace("</b>", "")
-            .replace("<i>", "").replace("</i>", "");
+        firstLine = Html.fromHtml(firstLine).toString();
 
         NotificationCompat.Builder builder = notifHelper.getBaseBuilder(title, firstLine);
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
@@ -112,6 +110,6 @@ public class RemindAfterDueAgent extends ContextWrapper {
             now.getTime(),
             0L,
             DateUtils.FORMAT_ABBREV_ALL);
-        return String.format("<b>%s</b>  <i>%s</i>", item.getContent(), relativeTime);
+        return String.format("<b>%s</b>  <i>%s</i>", Html.escapeHtml(item.getContent()), relativeTime);
     }
 }

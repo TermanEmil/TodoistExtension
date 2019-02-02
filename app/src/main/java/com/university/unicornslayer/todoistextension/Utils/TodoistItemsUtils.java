@@ -4,6 +4,7 @@ import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.ReminderManager.Reminder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,5 +39,18 @@ public class TodoistItemsUtils {
             return true;
 
         return now.getTime() - reminders.get(item.getId()).publicationDate.getTime() >= milsInterval;
+    }
+
+    public static TodoistItem getNextClosestItem(List<TodoistItem> items) {
+        TodoistItem closestItem = null;
+        long now = Calendar.getInstance().getTimeInMillis();
+
+        for (TodoistItem item : items) {
+            long itemDue = item.getDueDate().getTime();
+            if (itemDue >= now && (closestItem == null || itemDue >= closestItem.getDueDate().getTime()))
+                closestItem = item;
+        }
+
+        return closestItem;
     }
 }
