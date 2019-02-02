@@ -35,12 +35,15 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
         final Date now = new Date();
-        final long milsTimepoint = now.getTime() + sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1;
+        final long itsPastTimepoint = now.getTime() + sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1;
+        final int interval = sharedPrefsUtils.getMilsIntervalRemindAfterDue();
 
         items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                return item.getDueDate().getTime() <= milsTimepoint;
+                return
+                    item.getDueDate().getTime() <= itsPastTimepoint &&
+                    TodoistItemsUtils.itemMustBeRementioned(remindersData.afterDueReminders, item, interval, now);
             }
         });
 
@@ -49,6 +52,9 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
         sort(items);
         createNotification(items, getItemsToShow(items));
+
+        for (TodoistItem item : items)
+            remindersData.afterDueReminders.put(item.getId(), new Reminder(item));
     }
 
     private void sort(List<TodoistItem> items) {

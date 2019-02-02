@@ -4,6 +4,8 @@ import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.ReminderManager.Reminder;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class TodoistItemsUtils {
@@ -26,26 +28,15 @@ public class TodoistItemsUtils {
         });
     }
 
-    public static List<TodoistItem> withDueInInterval(
-            List<TodoistItem> items,
-            final long milsMin,
-            final long milsMax
+    public static boolean itemMustBeRementioned(
+        HashMap<Integer, Reminder> reminders,
+        TodoistItem item,
+        int milsInterval,
+        Date now
     ) {
-        return filter(items, new ITodoistItemIsGood() {
-            @Override
-            public boolean isGood(TodoistItem item) {
-                long itemDue = item.getDueDate().getTime();
-                return itemDue >= milsMin && itemDue <= milsMax;
-            }
-        });
-    }
+        if (!reminders.containsKey(item.getId()))
+            return true;
 
-    public static boolean listContainsItem(List<Reminder> reminders, TodoistItem item) {
-        for (Reminder reminder : reminders) {
-            if (reminder.compareTo(item) == 0)
-                return true;
-        }
-
-        return false;
+        return now.getTime() - reminders.get(item.getId()).publicationDate.getTime() >= milsInterval;
     }
 }
