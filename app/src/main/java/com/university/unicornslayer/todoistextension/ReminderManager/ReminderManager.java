@@ -81,9 +81,10 @@ public class ReminderManager extends ContextWrapper {
         remindAtDueAgent.createReminders(remindersData, items);
         remindAfterDueAgent.createReminders(remindersData, items);
 
+        remindersData.removeRedundantData(items, sharedPrefsUtils);
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
-        TodoistItem nextClosest = TodoistItemsUtils.getNextClosestItem(items);
 
+        TodoistItem nextClosest = TodoistItemsUtils.getNextClosestItem(items);
         fileDataManager.writeToFile(getString(R.string.next_closest_item), gson.toJson(nextClosest));
     }
 

@@ -53,4 +53,13 @@ public class TodoistItemsUtils {
 
         return closestItem;
     }
+
+    public static boolean listContainsIf(List<TodoistItem> items, ITodoistItemIsGood condition) {
+        for (TodoistItem item : items) {
+            if (condition.isGood(item))
+                return true;
+        }
+
+        return false;
+    }
 }
