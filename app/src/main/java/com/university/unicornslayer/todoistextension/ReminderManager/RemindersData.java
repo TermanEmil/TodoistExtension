@@ -19,7 +19,8 @@ public class RemindersData {
     public HashMap<Integer, Reminder> beforeDueReminders = new HashMap<>();
     public HashMap<Integer, Reminder> atDueReminders = new HashMap<>();
     public HashMap<Integer, Reminder> afterDueReminders = new HashMap<>();
-    public List<Integer> afterDueCurrentlyBeingMentioned = new ArrayList<>();
+
+    public long lastAfterDueRemindersCheck = 0;
 
     public void removeRedundantData(List<TodoistItem> items, SharedPrefsUtils sharedPrefsUtils) {
         removeBeforeDue();

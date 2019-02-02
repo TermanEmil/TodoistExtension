@@ -66,7 +66,7 @@ public class ReminderManager extends ContextWrapper {
         TodoistItemsRequestHelper helper = new TodoistItemsRequestHelper(
                 this,
                 sharedPrefsUtils.getToken(),
-                false,
+                verbose,
                 handler);
 
         helper.executeTask(new JSONObject());

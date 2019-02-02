@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class RemindAfterDueAgent extends ContextWrapper {
@@ -37,21 +38,19 @@ public class RemindAfterDueAgent extends ContextWrapper {
         final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1);
         final int interval = sharedPrefsUtils.getMilsIntervalRemindAfterDue();
 
-        items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
+        final boolean mustBeRementioned = now.getTime() >= remindersData.lastAfterDueRemindersCheck + interval;
+
+        List<TodoistItem> pastItems = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                if (item.getDueDate().getTime() > itsPastTimepoint)
-                    return false;
-
-                if (TodoistItemsUtils.mustBeRementioned(remindersData.afterDueReminders, item, interval, now))
-                    return true;
-
-                if (notifHelper.notifIsVisible(notificationId))
-                    return remindersData.afterDueCurrentlyBeingMentioned.contains(item.getId());
-
-                return false;
+                return item.getDueDate().getTime() <= itsPastTimepoint;
             }
         });
+
+        if (mustBeRementioned || thereAreNewItems(pastItems, remindersData.afterDueReminders)) {
+            items = pastItems;
+        } else
+            return;
 
         if (items.size() == 0)
             return;
@@ -62,10 +61,8 @@ public class RemindAfterDueAgent extends ContextWrapper {
         for (TodoistItem item : items)
             remindersData.afterDueReminders.put(item.getId(), new Reminder(item));
 
-        // Set currently being mentioned
-        remindersData.afterDueCurrentlyBeingMentioned.clear();
-        for (TodoistItem item : items)
-            remindersData.afterDueCurrentlyBeingMentioned.add(item.getId());
+        if (mustBeRementioned)
+            remindersData.lastAfterDueRemindersCheck = now.getTime();
     }
 
     private void sort(List<TodoistItem> items) {
@@ -122,5 +119,14 @@ public class RemindAfterDueAgent extends ContextWrapper {
             0L,
             DateUtils.FORMAT_ABBREV_ALL);
         return String.format("<b>%s</b>  <i>%s</i>", Html.escapeHtml(item.getContent()), relativeTime);
+    }
+
+    private boolean thereAreNewItems(List<TodoistItem> items, HashMap<Integer, Reminder> reminders) {
+        for (TodoistItem item : items) {
+            if (!reminders.containsKey(item.getId()))
+                return true;
+        }
+
+        return false;
     }
 }
