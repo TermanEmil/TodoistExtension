@@ -47,7 +47,7 @@ public class TodoistItemsUtils {
 
         for (TodoistItem item : items) {
             long itemDue = item.getDueDate().getTime();
-            if (itemDue >= now && (closestItem == null || itemDue >= closestItem.getDueDate().getTime()))
+            if (itemDue >= now && (closestItem == null || itemDue < closestItem.getDueDate().getTime()))
                 closestItem = item;
         }
 

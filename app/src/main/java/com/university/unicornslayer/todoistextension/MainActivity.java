@@ -16,6 +16,7 @@ import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.ReminderManager.ReminderManager;
 import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
+import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
 
 import java.util.Calendar;
 import java.util.List;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
                 displayTheNextItem();
             }
         });
+
+        ScheduleManager scheduleManager = new ScheduleManager(this);
+        scheduleManager.setRepeatingAlarm();
     }
 
     @Override

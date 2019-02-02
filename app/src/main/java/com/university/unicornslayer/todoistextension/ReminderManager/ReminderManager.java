@@ -11,16 +11,19 @@ import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
 import com.university.unicornslayer.todoistextension.Requests.TodoistItemsRequestHelper;
+import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
 import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.List;
 
 @SuppressLint("SimpleDateFormat")
 public class ReminderManager extends ContextWrapper {
     private final SharedPrefsUtils sharedPrefsUtils;
     private final FileDataManager fileDataManager;
+    private final ScheduleManager scheduleManager;
     private final Gson gson;
 
     private final RemindBeforeDueAgent remindBeforeDueAgent;
@@ -35,6 +38,7 @@ public class ReminderManager extends ContextWrapper {
 
         sharedPrefsUtils = new SharedPrefsUtils(this);
         fileDataManager = new FileDataManager(this);
+        scheduleManager = new ScheduleManager(this);
         gson = new Gson();
 
         remindBeforeDueAgent = new RemindBeforeDueAgent(this);
@@ -86,6 +90,12 @@ public class ReminderManager extends ContextWrapper {
 
         TodoistItem nextClosest = TodoistItemsUtils.getNextClosestItem(items);
         fileDataManager.writeToFile(getString(R.string.next_closest_item), gson.toJson(nextClosest));
+
+        if (nextClosest != null) {
+            long timeWhenToAlarm = getTimeUntilNextAlarm(nextClosest);
+            if (timeWhenToAlarm != -1)
+                scheduleManager.setExactAlarm(timeWhenToAlarm);
+        }
     }
 
     private RemindersData getRemindersData() {
@@ -99,5 +109,20 @@ public class ReminderManager extends ContextWrapper {
 
     private String getRemindersDataFilename() {
         return getString(R.string.reminders_data_filename);
+    }
+
+    private long getTimeUntilNextAlarm(TodoistItem nextClosestItem) {
+        long now = Calendar.getInstance().getTimeInMillis();
+        long due = nextClosestItem.getDueDate().getTime();
+        long dif = due - now;
+
+        if (dif <= sharedPrefsUtils.getSecRemindAtDue() * 1000)
+            return due + sharedPrefsUtils.getSecRemindAtDue() * 1000 - 1000;
+
+        long finalResult = due + sharedPrefsUtils.getMinsRemindBeforeDue() * 1000 * 60 - 1000;
+        if (now + sharedPrefsUtils.getNetworkCheckInterval() > finalResult)
+            return -1;
+        else
+            return finalResult;
     }
 }
