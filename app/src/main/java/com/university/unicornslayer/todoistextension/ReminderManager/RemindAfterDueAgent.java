@@ -1,7 +1,6 @@
 package com.university.unicornslayer.todoistextension.ReminderManager;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.support.v4.app.NotificationCompat;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class RemindAfterDueAgent extends ContextWrapper {
@@ -35,20 +35,34 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
         final Date now = new Date();
-        final long milsTimepoint = now.getTime() + sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1;
+        final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1);
+        final int interval = sharedPrefsUtils.getMilsIntervalRemindAfterDue();
 
-        items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
+        final boolean mustBeRementioned = now.getTime() >= remindersData.lastAfterDueRemindersCheck + interval;
+
+        List<TodoistItem> pastItems = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                return item.getDueDate().getTime() <= milsTimepoint;
+                return item.getDueDate().getTime() <= itsPastTimepoint;
             }
         });
+
+        if (mustBeRementioned || thereAreNewItems(pastItems, remindersData.afterDueReminders)) {
+            items = pastItems;
+        } else
+            return;
 
         if (items.size() == 0)
             return;
 
         sort(items);
         createNotification(items, getItemsToShow(items));
+
+        for (TodoistItem item : items)
+            remindersData.afterDueReminders.put(item.getId(), new Reminder(item));
+
+        if (mustBeRementioned)
+            remindersData.lastAfterDueRemindersCheck = now.getTime();
     }
 
     private void sort(List<TodoistItem> items) {
@@ -80,9 +94,7 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
         Date now = new Date();
         String firstLine = decorateContent(itemsToShow.get(0), now);
-        firstLine = firstLine
-            .replace("<b>", "").replace("</b>", "")
-            .replace("<i>", "").replace("</i>", "");
+        firstLine = Html.fromHtml(firstLine).toString();
 
         NotificationCompat.Builder builder = notifHelper.getBaseBuilder(title, firstLine);
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
@@ -106,6 +118,15 @@ public class RemindAfterDueAgent extends ContextWrapper {
             now.getTime(),
             0L,
             DateUtils.FORMAT_ABBREV_ALL);
-        return String.format("<b>%s</b>  <i>%s</i>", item.getContent(), relativeTime);
+        return String.format("<b>%s</b>  <i>%s</i>", Html.escapeHtml(item.getContent()), relativeTime);
+    }
+
+    private boolean thereAreNewItems(List<TodoistItem> items, HashMap<Integer, Reminder> reminders) {
+        for (TodoistItem item : items) {
+            if (!reminders.containsKey(item.getId()))
+                return true;
+        }
+
+        return false;
     }
 }

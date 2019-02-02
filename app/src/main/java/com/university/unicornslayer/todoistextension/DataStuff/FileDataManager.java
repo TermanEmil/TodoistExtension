@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,10 +20,14 @@ public class FileDataManager extends ContextWrapper {
         InputStream inputStream;
         try {
             inputStream = openFileInput(filename);
+        } catch (FileNotFoundException e) {
+            return null;
+        }
 
-            if (inputStream == null)
-                return null;
+        if (inputStream == null)
+            return null;
 
+        try {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuilder stringBuilder = new StringBuilder();

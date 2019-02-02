@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @SuppressLint("SimpleDateFormat")
@@ -26,6 +27,21 @@ public class TodoistItem {
 
     public TodoistItem(JSONObject jsonObject) {
         json = jsonObject;
+    }
+
+    public String getTrimedContent(int maxSize) {
+        if (getContent().length() <= maxSize)
+            return getContent();
+
+        return getContent().substring(0, maxSize) + "...";
+    }
+
+    public boolean dueIsInFuture(long now) {
+        return getDueDate().getTime() > now;
+    }
+
+    public boolean dueIsInFuture() {
+        return dueIsInFuture(Calendar.getInstance().getTimeInMillis());
     }
 
     public int getId() {

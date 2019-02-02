@@ -38,12 +38,12 @@ public class RemindBeforeDueAgent extends ContextWrapper {
         items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                long itemDue = item.getDueDate().getTime();
-
-                return
-                    itemDue >= milsMin &&
-                    itemDue <= milsMax &&
-                    !TodoistItemsUtils.listContainsItem(remindersData.beforeDueReminders, item);
+            long itemDue = item.getDueDate().getTime();
+            return
+                itemDue >= milsMin &&
+                itemDue <= milsMax &&
+               (!remindersData.beforeDueReminders.containsKey(item.getId()) ||
+                remindersData.beforeDueReminders.get(item.getId()).compareTo(item) != 0);
             }
         });
 
@@ -59,7 +59,7 @@ public class RemindBeforeDueAgent extends ContextWrapper {
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
             notifHelper.notify(item.getId(), builder.build());
-            remindersData.beforeDueReminders.add(new Reminder(item));
+            remindersData.beforeDueReminders.put(item.getId(), new Reminder(item));
         }
     }
 

@@ -62,6 +62,18 @@ public class SharedPrefsUtils extends ContextWrapper {
         return this.getSharedPreferences().getInt("maxNbOfRemindersToShowAfterDue", 5);
     }
 
+    public int getMilsIntervalRemindAfterDue() {
+        return this.getSharedPreferences().getInt("milsIntervalRemindAfterDue", 1000 * 60 * 60 * 24);
+    }
+
+    public int getMaxContentSizeForShortDisplay() {
+        return this.getSharedPreferences().getInt("maxContentSizeForShortDisplay", 20);
+    }
+
+    public int getNetworkCheckInterval() {
+        return this.getSharedPreferences().getInt("networkCheckInterval", 1000 * 60 * 60 * 3);
+    }
+
     public void commitAndWait(final IOnTaskDone onDoneHandler) {
         final ProgressDialog spinner = new ProgressDialog(this);
         spinner.setMessage("Saving, please wait");

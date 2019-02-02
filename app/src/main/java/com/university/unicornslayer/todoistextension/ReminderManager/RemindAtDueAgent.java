@@ -41,7 +41,8 @@ public class RemindAtDueAgent extends ContextWrapper {
                 return
                     itemDue >= milsMin &&
                     itemDue <= milsMax &&
-                    !TodoistItemsUtils.listContainsItem(remindersData.atDueReminders, item);
+                   (!remindersData.atDueReminders.containsKey(item.getId()) ||
+                    remindersData.atDueReminders.get(item.getId()).compareTo(item) != 0);
             }
         });
 
@@ -57,7 +58,7 @@ public class RemindAtDueAgent extends ContextWrapper {
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
             notifHelper.notify(item.getId(), builder.build());
-            remindersData.atDueReminders.add(new Reminder(item));
+            remindersData.atDueReminders.put(item.getId(), new Reminder(item));
         }
     }
 
