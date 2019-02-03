@@ -3,7 +3,7 @@ package com.university.unicornslayer.todoistextension.Requests;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TodoistRequestTask extends RequestTask {
+public class TodoistRequestTask extends JsonRequestTask {
     private static final String url = "https://todoist.com/api/v7/sync";
     private final String mToken;
 

@@ -13,7 +13,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class RequestTask extends AsyncTask<JSONObject, Void, RequestResult> {
+public class JsonRequestTask extends AsyncTask<JSONObject, Void, RequestResult> {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private String mUrl;
@@ -21,7 +21,7 @@ public class RequestTask extends AsyncTask<JSONObject, Void, RequestResult> {
 
     private OkHttpClient mOkHttpClient = new OkHttpClient();
 
-    public RequestTask(String url, IRequestHandler handler) {
+    public JsonRequestTask(String url, IRequestHandler handler) {
         mUrl = url;
         mRequestHandler = handler;
     }
