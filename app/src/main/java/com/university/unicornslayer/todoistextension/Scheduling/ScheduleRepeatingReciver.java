@@ -13,7 +13,6 @@ public class ScheduleRepeatingReciver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        Log.i("Recived", "-------------------------------");
         ReminderManager reminderManager = new ReminderManager(context);
         reminderManager.checkNotifications();
     }

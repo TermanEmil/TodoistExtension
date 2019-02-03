@@ -37,10 +37,11 @@ public class ScheduleManager extends ContextWrapper {
             PendingIntent.FLAG_CANCEL_CURRENT);
 
         int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 2000, repeatingInterval, pi);
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            System.currentTimeMillis() + 2000,
+            repeatingInterval, pi);
         repeatingAlarmIsSet = true;
-
-        Log.i("Repeating", "Set -------------------------------------------- Repeating");
     }
 
     public void setExactAlarm(long localTargetTime) {
@@ -52,9 +53,7 @@ public class ScheduleManager extends ContextWrapper {
             PendingIntent.FLAG_CANCEL_CURRENT);
 
         long targetTime = localTargetTime + getLocalTimeDiff();
-        alarmManager.set(AlarmManager.RTC_WAKEUP, targetTime, pi);
-
-        Log.i("Exact", "Set -------------------------------------------- Exact");
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, targetTime, pi);
     }
 
     private long getLocalTimeDiff() {
