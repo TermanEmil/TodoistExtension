@@ -82,17 +82,17 @@ public class ReminderManager extends ContextWrapper {
 
         RemindersData remindersData = getRemindersData();
         remindBeforeDueAgent.createReminders(remindersData, items);
-//        remindAtDueAgent.createReminders(remindersData, items);
-//        remindAfterDueAgent.createReminders(remindersData, items);
+        remindAtDueAgent.createReminders(remindersData, items);
+        remindAfterDueAgent.createReminders(remindersData, items);
 
-//        remindersData.removeRedundantData(items, sharedPrefsUtils);
+        remindersData.removeRedundantData(items, sharedPrefsUtils);
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
 
         TodoistItem nextClosest = TodoistItemsUtils.getNextClosestItem(items);
         fileDataManager.writeToFile(getString(R.string.next_closest_item), gson.toJson(nextClosest));
 
         if (nextClosest != null) {
-            long timeWhenToAlarm = getTimeUntilNextAlarm(nextClosest);
+            long timeWhenToAlarm = getTimeForNextAlarm(remindersData, items);
             if (timeWhenToAlarm != -1)
                 scheduleManager.setExactAlarm(timeWhenToAlarm);
         }
@@ -111,18 +111,42 @@ public class ReminderManager extends ContextWrapper {
         return getString(R.string.reminders_data_filename);
     }
 
-    private long getTimeUntilNextAlarm(TodoistItem nextClosestItem) {
+    private long getTimeForNextAlarm(RemindersData remindersData, List<TodoistItem> items
+    ) {
         long now = Calendar.getInstance().getTimeInMillis();
-        long due = nextClosestItem.getDueDate().getTime();
-        long dif = due - now;
+        long atDue = now + sharedPrefsUtils.getRemindAtDue();
+        long beforeDue = now + sharedPrefsUtils.getRemindBeforeDue();
+        long targetDif = Long.MAX_VALUE;
 
-        if (dif <= sharedPrefsUtils.getRemindAtDue())
-            return due + sharedPrefsUtils.getRemindAtDue() - 1000;
+        for (TodoistItem item : items) {
+            if (item.getDueDate().getTime() <= now || remindersData.atDueReminders.containsKey(item.getId()))
+                continue;
 
-        long finalResult = due + sharedPrefsUtils.getRemindBeforeDue() - 1000;
-        if (now + sharedPrefsUtils.getNetworkCheckInterval() > finalResult)
+            long atDueDif = item.getDueDate().getTime() - atDue;
+            long beforeDueDif = item.getDueDate().getTime() - beforeDue;
+
+            if (atDueDif < 0) atDueDif = Long.MAX_VALUE;
+            if (beforeDueDif < 0) beforeDueDif = Long.MAX_VALUE;
+
+            long dif = Math.min(atDueDif, beforeDueDif);
+            if (dif < targetDif)
+                targetDif = dif;
+        }
+
+        if (targetDif == Long.MAX_VALUE)
             return -1;
+
+        long finalDif;
+        if (targetDif < sharedPrefsUtils.getRemindAtDue())
+            finalDif = targetDif;
+        else if (targetDif < sharedPrefsUtils.getRemindBeforeDue())
+            finalDif = targetDif - sharedPrefsUtils.getRemindAtDue();
         else
-            return finalResult;
+            finalDif = targetDif - sharedPrefsUtils.getRemindBeforeDue();
+
+        if (finalDif > sharedPrefsUtils.getNetworkCheckInterval())
+            return -1;
+
+        return now + finalDif;
     }
 }

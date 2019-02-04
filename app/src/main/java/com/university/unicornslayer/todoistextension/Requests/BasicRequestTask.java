@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,7 +27,12 @@ public class BasicRequestTask extends AsyncTask<Void, Void, RequestResult> {
             .build();
 
         RequestResult requestResult = new RequestResult();
-        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .callTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .build();
+
         try {
             requestResult.response = okHttpClient.newCall(request).execute();
             requestResult.httpStatus = requestResult.response.code();
