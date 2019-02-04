@@ -55,7 +55,7 @@ import static android.support.v4.app.ActivityCompat.requestPermissions;
 @SuppressLint("DefaultLocale")
 public class UpdateManager extends ContextWrapper {
     private static final Pattern versionNumberPattern =
-        Pattern.compile("<a href=\"(/TermanEmil/TodoistExtension/releases/download/v(\\d+).(\\d+)/.+\\.apk)");
+        Pattern.compile("TermanEmil/TodoistExtension/releases/tag/v(\\d+).(\\d+)");
 
     private final PermissionHelper permissionHelper;
 
@@ -135,41 +135,25 @@ public class UpdateManager extends ContextWrapper {
     }
 
     private void onGetDoneSuccess(Response response) {
-        canCheckForUpdatesAgain = false;
-        spinner.show();
-        getSiteTask2 = new ResponseReaderTask(response, new IObjectHandler() {
-            @Override
-            public void onDone(Object o) {
-                onResponseBodyReadDone((String) o);
-                getSiteTask2 = null;
-                spinner.dismiss();
-                canCheckForUpdatesAgain = true;
-            }
-        });
-        getSiteTask2.execute();
-    }
-
-    private void onResponseBodyReadDone(String bodyStr) {
-        if (bodyStr == null) {
-            showError("Failed to check for updates");
-            Log.e("Updater", "Failed to read response body");
-            return;
-        }
-
-        Matcher m = versionNumberPattern.matcher(bodyStr);
-        if (!m.find() || m.groupCount() != 3) {
+        String url = response.request().url().toString();
+        Matcher m = versionNumberPattern.matcher(url);
+        if (!m.find() || m.groupCount() != 2) {
             showError(getString(R.string.update_regex_fail_errormsg));
             Log.e("Internal", getString(R.string.update_regex_fail_errormsg));
             return;
         }
 
-        final Version webVersion = new Version(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)));
+        final Version webVersion = new Version(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
         if (!versionIsBiggerThanCurrent(webVersion)) {
             Toast.makeText(this, getString(R.string.its_latest_version_msg), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        final String downloadLink = "https://github.com" + m.group(1);
+        final String downloadLink = String.format(
+            "https://github.com/TermanEmil/TodoistExtension/releases/download/v%d.%d/TodoistExtension.apk",
+            webVersion.part1,
+            webVersion.part2);
+
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -179,7 +163,6 @@ public class UpdateManager extends ContextWrapper {
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
                         break;
                 }
             }
@@ -236,7 +219,6 @@ public class UpdateManager extends ContextWrapper {
         request.allowScanningByMediaScanner();
 
         DownloadManager downloadmanager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-
         BroadcastReceiver onComplete = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 if (!DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction()))
