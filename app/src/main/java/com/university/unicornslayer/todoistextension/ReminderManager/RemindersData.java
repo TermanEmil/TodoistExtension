@@ -7,7 +7,6 @@ import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
 import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIsGood;
 import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,7 +34,7 @@ public class RemindersData {
             Map.Entry pair = (Map.Entry) it.next();
             Reminder reminder = (Reminder) pair.getValue();
 
-            if (reminder.dueDate.getTime() < now)
+            if (reminder.dueDate < now)
                 it.remove();
         }
     }
@@ -43,14 +42,14 @@ public class RemindersData {
     private void removeAtDue(SharedPrefsUtils sharedPrefsUtils) {
         long timePoint =
             Calendar.getInstance().getTimeInMillis() -
-            sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1;
+            sharedPrefsUtils.getDueCanBeLate() + 1;
 
         Iterator it = atDueReminders.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Reminder reminder = (Reminder) pair.getValue();
 
-            if (reminder.dueDate.getTime() < timePoint)
+            if (reminder.dueDate < timePoint)
                 it.remove();
         }
     }

@@ -24,21 +24,9 @@ public class TodoistItemsUtils {
         return filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                return item.getDueDate() != null;
+                return item.getDueDate() != -1;
             }
         });
-    }
-
-    public static boolean mustBeRementioned(
-        HashMap<Integer, Reminder> reminders,
-        TodoistItem item,
-        int milsInterval,
-        Date now
-    ) {
-        if (!reminders.containsKey(item.getId()))
-            return true;
-
-        return now.getTime() - reminders.get(item.getId()).publicationDate.getTime() >= milsInterval;
     }
 
     public static TodoistItem getNextClosestItem(List<TodoistItem> items) {
@@ -46,8 +34,8 @@ public class TodoistItemsUtils {
         long now = Calendar.getInstance().getTimeInMillis();
 
         for (TodoistItem item : items) {
-            long itemDue = item.getDueDate().getTime();
-            if (itemDue >= now && (closestItem == null || itemDue < closestItem.getDueDate().getTime()))
+            long itemDue = item.getDueDate();
+            if (itemDue >= now && (closestItem == null || itemDue < closestItem.getDueDate()))
                 closestItem = item;
         }
 

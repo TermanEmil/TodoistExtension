@@ -35,15 +35,15 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
         final Date now = new Date();
-        final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1);
-        final int interval = sharedPrefsUtils.getMilsIntervalRemindAfterDue();
+        final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getDueCanBeLate() + 1);
+        final int interval = sharedPrefsUtils.getIntervalRemindAfterDue();
 
         final boolean mustBeRementioned = now.getTime() >= remindersData.lastAfterDueRemindersCheck + interval;
 
         List<TodoistItem> pastItems = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-                return item.getDueDate().getTime() <= itsPastTimepoint;
+                return item.getDueDate() <= itsPastTimepoint;
             }
         });
 
@@ -69,7 +69,7 @@ public class RemindAfterDueAgent extends ContextWrapper {
         Collections.sort(items, new Comparator<TodoistItem>() {
             @Override
             public int compare(TodoistItem o1, TodoistItem o2) {
-                return (int) (o2.getDueDate().getTime() - o1.getDueDate().getTime());
+                return (int) (o2.getDueDate() - o1.getDueDate());
             }
         });
     }
@@ -114,7 +114,7 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
     private String decorateContent(TodoistItem item, Date now) {
         CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
-            item.getDueDate().getTime(),
+            item.getDueDate(),
             now.getTime(),
             0L,
             DateUtils.FORMAT_ABBREV_ALL);

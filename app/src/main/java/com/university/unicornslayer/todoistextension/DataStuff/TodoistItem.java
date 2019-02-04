@@ -21,7 +21,7 @@ public class TodoistItem {
     private int id;
 
     private boolean dueDateIsSet = false;
-    private Date dueDate;
+    private long dueDate;
 
     private String content;
 
@@ -37,7 +37,7 @@ public class TodoistItem {
     }
 
     public boolean dueIsInFuture(long now) {
-        return getDueDate().getTime() > now;
+        return getDueDate() > now;
     }
 
     public boolean dueIsInFuture() {
@@ -70,12 +70,12 @@ public class TodoistItem {
         return content;
     }
 
-    public Date getDueDate() {
+    public long getDueDate() {
         if (!dueDateIsSet) {
             try {
-                dueDate = format.parse(json.getString("due_date_utc"));
+                dueDate = format.parse(json.getString("due_date_utc")).getTime();
             } catch (ParseException e) {
-                dueDate = null;
+                dueDate = -1;
             } catch (JSONException e) {
                 onException(e);
             }

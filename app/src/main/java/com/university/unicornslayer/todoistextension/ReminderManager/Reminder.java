@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Reminder implements Comparable<TodoistItem> {
     public int itemId;
-    public Date dueDate;
+    public long dueDate;
     public String itemContent;
     public Date publicationDate;
 
@@ -23,7 +23,7 @@ public class Reminder implements Comparable<TodoistItem> {
         if (
                 o.getId() == itemId &&
                 o.getContent().equals(itemContent) &&
-                o.getDueDate().getTime() == dueDate.getTime()
+                o.getDueDate() == dueDate
         ) {
             return 0;
         }

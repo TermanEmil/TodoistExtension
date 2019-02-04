@@ -38,16 +38,17 @@ public class SharedPrefsUtils extends ContextWrapper {
         this.getSharedPreferencesEditor().putString("token", token);
     }
 
-    public int getMinsRemindBeforeDue() {
-        return this.getSharedPreferences().getInt("minsRemindBeforeDue", 20);
+    public int getRemindBeforeDue() {
+        return this.getSharedPreferences().getInt("remindBeforeDue", 1000 * 60 * 20);
     }
 
-    public int getSecRemindAtDue() {
-        return this.getSharedPreferences().getInt("secRemindAtDue", 60);
+    public int getRemindAtDue() {
+        return this.getSharedPreferences().getInt("remindAtDue", 1000 * 60);
     }
 
-    public int getSecDueCanBeLate() {
-        return this.getSharedPreferences().getInt("secDueCanBeLate", 60 * 5);
+    // How much time due can be late
+    public int getDueCanBeLate() {
+        return this.getSharedPreferences().getInt("dueCanBeLate", 1000 * 60 * 5);
     }
 
     public boolean getProduceSoundBeforeDue() {
@@ -62,8 +63,8 @@ public class SharedPrefsUtils extends ContextWrapper {
         return this.getSharedPreferences().getInt("maxNbOfRemindersToShowAfterDue", 5);
     }
 
-    public int getMilsIntervalRemindAfterDue() {
-        return this.getSharedPreferences().getInt("milsIntervalRemindAfterDue", 1000 * 60 * 60 * 24);
+    public int getIntervalRemindAfterDue() {
+        return this.getSharedPreferences().getInt("intervalRemindAfterDue", 1000 * 60 * 60 * 24);
     }
 
     public int getMaxContentSizeForShortDisplay() {

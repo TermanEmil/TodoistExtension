@@ -31,19 +31,18 @@ public class RemindBeforeDueAgent extends ContextWrapper {
     }
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
-        final Date now = new Date();
-        final long milsMin = now.getTime() + sharedPrefsUtils.getSecRemindAtDue() * 1000;
-        final long milsMax = milsMin + sharedPrefsUtils.getMinsRemindBeforeDue() * 60 * 1000;
+        final long now = new Date().getTime();
+        final long milsMin = now + sharedPrefsUtils.getRemindAtDue();
+        final long milsMax = now + sharedPrefsUtils.getRemindBeforeDue();
 
         items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
             @Override
             public boolean isGood(TodoistItem item) {
-            long itemDue = item.getDueDate().getTime();
-            return
-                itemDue >= milsMin &&
-                itemDue <= milsMax &&
-               (!remindersData.beforeDueReminders.containsKey(item.getId()) ||
-                remindersData.beforeDueReminders.get(item.getId()).compareTo(item) != 0);
+                return
+                    item.getDueDate() >= milsMin &&
+                        item.getDueDate() <= milsMax &&
+                   (!remindersData.beforeDueReminders.containsKey(item.getId()) ||
+                    remindersData.beforeDueReminders.get(item.getId()).compareTo(item) != 0);
             }
         });
 

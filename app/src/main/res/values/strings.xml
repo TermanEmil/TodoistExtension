@@ -5,4 +5,8 @@
     <string name="reminders_data_filename">RemindersData.json</string>
     <string name="next_closest_item">nextClosestItem.json</string>
     <string name="msg_when_no_tasks_in_future">No new tasks</string>
+    <string name="update_url">https://github.com/TermanEmil/TodoistExtension/releases/latest/</string>
+    <string name="update_regex_fail_errormsg">Internal parsing error. Failed to get the latest version from server</string>
+    <string name="its_latest_version_msg">The latest version is currently installed</string>
+    <string name="unable_to_open_file">Unable to open file</string>
 </resources>
