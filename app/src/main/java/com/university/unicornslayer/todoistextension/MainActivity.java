@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
-                item.getDueDate().getTime(),
+                item.getDueDate(),
                 Calendar.getInstance().getTimeInMillis(),
                 0L,
                 DateUtils.FORMAT_ABBREV_ALL);

@@ -119,11 +119,11 @@ public class ReminderManager extends ContextWrapper {
         long targetDif = Long.MAX_VALUE;
 
         for (TodoistItem item : items) {
-            if (item.getDueDate().getTime() <= now || remindersData.atDueReminders.containsKey(item.getId()))
+            if (item.getDueDate() <= now || remindersData.atDueReminders.containsKey(item.getId()))
                 continue;
 
-            long atDueDif = item.getDueDate().getTime() - atDue;
-            long beforeDueDif = item.getDueDate().getTime() - beforeDue;
+            long atDueDif = item.getDueDate() - atDue;
+            long beforeDueDif = item.getDueDate() - beforeDue;
 
             if (atDueDif < 0) atDueDif = Long.MAX_VALUE;
             if (beforeDueDif < 0) beforeDueDif = Long.MAX_VALUE;

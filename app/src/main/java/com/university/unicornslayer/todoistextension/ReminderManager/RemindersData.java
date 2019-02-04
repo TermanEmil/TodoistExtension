@@ -34,7 +34,7 @@ public class RemindersData {
             Map.Entry pair = (Map.Entry) it.next();
             Reminder reminder = (Reminder) pair.getValue();
 
-            if (reminder.dueDate.getTime() < now)
+            if (reminder.dueDate < now)
                 it.remove();
         }
     }
@@ -49,7 +49,7 @@ public class RemindersData {
             Map.Entry pair = (Map.Entry) it.next();
             Reminder reminder = (Reminder) pair.getValue();
 
-            if (reminder.dueDate.getTime() < timePoint)
+            if (reminder.dueDate < timePoint)
                 it.remove();
         }
     }
