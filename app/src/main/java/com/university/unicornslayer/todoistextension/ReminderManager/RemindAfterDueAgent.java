@@ -35,8 +35,8 @@ public class RemindAfterDueAgent extends ContextWrapper {
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
         final Date now = new Date();
-        final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getSecDueCanBeLate() * 1000 + 1);
-        final int interval = sharedPrefsUtils.getMilsIntervalRemindAfterDue();
+        final long itsPastTimepoint = now.getTime() - (sharedPrefsUtils.getDueCanBeLate() + 1);
+        final int interval = sharedPrefsUtils.getIntervalRemindAfterDue();
 
         final boolean mustBeRementioned = now.getTime() >= remindersData.lastAfterDueRemindersCheck + interval;
 

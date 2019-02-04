@@ -82,10 +82,10 @@ public class ReminderManager extends ContextWrapper {
 
         RemindersData remindersData = getRemindersData();
         remindBeforeDueAgent.createReminders(remindersData, items);
-        remindAtDueAgent.createReminders(remindersData, items);
-        remindAfterDueAgent.createReminders(remindersData, items);
+//        remindAtDueAgent.createReminders(remindersData, items);
+//        remindAfterDueAgent.createReminders(remindersData, items);
 
-        remindersData.removeRedundantData(items, sharedPrefsUtils);
+//        remindersData.removeRedundantData(items, sharedPrefsUtils);
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
 
         TodoistItem nextClosest = TodoistItemsUtils.getNextClosestItem(items);
@@ -116,10 +116,10 @@ public class ReminderManager extends ContextWrapper {
         long due = nextClosestItem.getDueDate().getTime();
         long dif = due - now;
 
-        if (dif <= sharedPrefsUtils.getSecRemindAtDue() * 1000)
-            return due + sharedPrefsUtils.getSecRemindAtDue() * 1000 - 1000;
+        if (dif <= sharedPrefsUtils.getRemindAtDue())
+            return due + sharedPrefsUtils.getRemindAtDue() - 1000;
 
-        long finalResult = due + sharedPrefsUtils.getMinsRemindBeforeDue() * 1000 * 60 - 1000;
+        long finalResult = due + sharedPrefsUtils.getRemindBeforeDue() - 1000;
         if (now + sharedPrefsUtils.getNetworkCheckInterval() > finalResult)
             return -1;
         else
