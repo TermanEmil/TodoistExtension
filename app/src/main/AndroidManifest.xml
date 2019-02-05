@@ -24,13 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TokenInputActivity"></activity>
+        <activity android:name=".TokenInputActivity" />
 
-        <receiver android:process=":remote" android:name=".Scheduling.ScheduleRepeatingReciver" />
-        <receiver android:process=":remote" android:name=".Scheduling.ScheduleExactReciver" />
+        <receiver
+            android:name=".Scheduling.ScheduleRepeatingReciver"
+            android:process=":remote" />
+        <receiver
+            android:name=".Scheduling.ScheduleExactReciver"
+            android:process=":remote" />
         <receiver android:name=".Scheduling.OnBootCompleted">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -41,8 +45,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

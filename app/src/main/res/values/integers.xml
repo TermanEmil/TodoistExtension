@@ -3,4 +3,9 @@
     <integer name="versionPart1">1</integer>
     <integer name="versionPart2">1</integer>
     <integer name="writeExternlPermissionRequestNb">42</integer>
+
+    <!-- Default values -->
+    <integer name="default_mins_remind_before_due">20</integer>
+    <integer name="default_mins_remind_at_due">1</integer>
+    <integer name="default_mins_network_check">180</integer>
 </resources>

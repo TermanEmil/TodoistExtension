@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -64,16 +65,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ScheduleManager scheduleManager = new ScheduleManager(this);
-        scheduleManager.setRepeatingAlarm();
+//        ScheduleManager scheduleManager = new ScheduleManager(this);
+//        scheduleManager.setRepeatingAlarm();
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (sharedPrefsUtils.getToken() == null)
-            gotoInputToken();
+//        if (sharedPrefsUtils.getToken() == null)
+//            gotoInputToken();
 
         displayTheNextItem();
     }
@@ -88,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCheckReminders(View view) {
+        String a = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString("remindBeforeDue", "");
         reminderManager.checkNotifications();
     }
 
@@ -134,5 +139,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCheckForUpdates(View view) {
         updateManager.checkForUpdates();
+    }
+
+    public void onClickSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

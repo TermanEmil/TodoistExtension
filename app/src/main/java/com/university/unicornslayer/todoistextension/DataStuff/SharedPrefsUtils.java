@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+
+import com.university.unicornslayer.todoistextension.R;
 
 public class SharedPrefsUtils extends ContextWrapper {
-    private static final String prefsName = "todoist_prefs";
-
     private SharedPreferences mSharedPreferences = null;
     private SharedPreferences.Editor mSharedPreferencesEditor = null;
 
@@ -18,7 +19,7 @@ public class SharedPrefsUtils extends ContextWrapper {
 
     public SharedPreferences getSharedPreferences() {
         if (mSharedPreferences == null)
-            mSharedPreferences = getSharedPreferences(prefsName, MODE_PRIVATE);
+            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         return mSharedPreferences;
     }
@@ -39,11 +40,15 @@ public class SharedPrefsUtils extends ContextWrapper {
     }
 
     public int getRemindBeforeDue() {
-        return this.getSharedPreferences().getInt("remindBeforeDue", 1000 * 60 * 20);
+        return this.getSharedPreferences().getInt(
+            "remindBeforeDue",
+            getResources().getInteger(R.integer.default_mins_remind_before_due) * 1000 * 60);
     }
 
     public int getRemindAtDue() {
-        return this.getSharedPreferences().getInt("remindAtDue", 1000 * 60);
+        return this.getSharedPreferences().getInt(
+            "remindAtDue",
+            getResources().getInteger(R.integer.default_mins_remind_at_due) * 1000 * 60);
     }
 
     // How much time due can be late
@@ -52,11 +57,15 @@ public class SharedPrefsUtils extends ContextWrapper {
     }
 
     public boolean getProduceSoundBeforeDue() {
-        return this.getSharedPreferences().getBoolean("produceSoundBeforeDue", false);
+        return this.getSharedPreferences().getBoolean(
+            "produceSoundBeforeDue",
+            getResources().getBoolean(R.bool.default_before_due_make_sound));
     }
 
     public boolean getProduceSoundAtDue() {
-        return this.getSharedPreferences().getBoolean("produceSoundAtDue", true);
+        return this.getSharedPreferences().getBoolean(
+            "produceSoundAtDue",
+            getResources().getBoolean(R.bool.default_at_due_make_sound));
     }
 
     public int getMaxNbOfRemindersToShowAfterDue() {
@@ -67,12 +76,20 @@ public class SharedPrefsUtils extends ContextWrapper {
         return this.getSharedPreferences().getInt("intervalRemindAfterDue", 1000 * 60 * 60 * 24);
     }
 
+    public boolean getDoRemindAboutUnfinishedTasks() {
+        return this.getSharedPreferences().getBoolean(
+            "doRemindAboutUnfinishedTasks",
+            getResources().getBoolean(R.bool.default_do_remind_about_unfinished));
+    }
+
     public int getMaxContentSizeForShortDisplay() {
         return this.getSharedPreferences().getInt("maxContentSizeForShortDisplay", 20);
     }
 
     public int getNetworkCheckInterval() {
-        return this.getSharedPreferences().getInt("networkCheckInterval", 1000 * 60 * 60 * 3);
+        return this.getSharedPreferences().getInt(
+            "networkCheckInterval",
+            getResources().getInteger(R.integer.default_mins_network_check) * 1000 * 60);
     }
 
     public void commitAndWait(final IOnTaskDone onDoneHandler) {
