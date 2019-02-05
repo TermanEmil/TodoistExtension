@@ -51,7 +51,7 @@ public class SharedPrefsUtils extends ContextWrapper {
             getResources().getInteger(R.integer.default_mins_remind_at_due) * 1000 * 60);
     }
 
-    // How much time due can be late
+    // How much time due can be late before it's considered unfinished
     public int getDueCanBeLate() {
         return this.getSharedPreferences().getInt("dueCanBeLate", 1000 * 60 * 5);
     }
@@ -73,7 +73,9 @@ public class SharedPrefsUtils extends ContextWrapper {
     }
 
     public int getIntervalRemindAfterDue() {
-        return this.getSharedPreferences().getInt("intervalRemindAfterDue", 1000 * 60 * 60 * 24);
+        return this.getSharedPreferences().getInt(
+            "intervalRemindAfterDue",
+            1000 * 60 * 60 * 24);
     }
 
     public boolean getDoRemindAboutUnfinishedTasks() {
@@ -83,7 +85,9 @@ public class SharedPrefsUtils extends ContextWrapper {
     }
 
     public int getMaxContentSizeForShortDisplay() {
-        return this.getSharedPreferences().getInt("maxContentSizeForShortDisplay", 20);
+        return this.getSharedPreferences().getInt(
+            "maxContentSizeForShortDisplay",
+            20);
     }
 
     public int getNetworkCheckInterval() {

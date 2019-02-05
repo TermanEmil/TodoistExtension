@@ -201,10 +201,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_token);
-            setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("token"));
+            Intent intent = new Intent(getContext(), TokenInputActivity.class);
+            startActivity(intent);
+//            addPreferencesFromResource(R.xml.pref_token);
+//            setHasOptionsMenu(true);
+//
+//            bindPreferenceSummaryToValue(findPreference("token"));
         }
 
         @Override

@@ -12,6 +12,11 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
+    <!--<header-->
+        <!--android:fragment="com.university.unicornslayer.todoistextension.SettingsActivity$TokenPreferenceFragment"-->
+        <!--android:icon="@drawable/ic_baseline_swap_vert"-->
+        <!--android:title="@string/pref_header_token" />-->
+
     <header
         android:fragment="com.university.unicornslayer.todoistextension.SettingsActivity$TokenPreferenceFragment"
         android:icon="@drawable/ic_baseline_swap_vert"

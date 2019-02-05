@@ -65,24 +65,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        ScheduleManager scheduleManager = new ScheduleManager(this);
-//        scheduleManager.setRepeatingAlarm();
-
-        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
+        ScheduleManager scheduleManager = new ScheduleManager(this);
+        scheduleManager.setRepeatingAlarm();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-//        if (sharedPrefsUtils.getToken() == null)
-//            gotoInputToken();
+        if (sharedPrefsUtils.getToken() == null)
+            gotoInputToken();
 
         displayTheNextItem();
-    }
-
-    public void onChangeToken(View view) {
-        gotoInputToken();
     }
 
     private void gotoInputToken() {
@@ -91,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCheckReminders(View view) {
-        String a = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString("remindBeforeDue", "");
         reminderManager.checkNotifications();
     }
 
@@ -143,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 }
