@@ -26,7 +26,8 @@ public class ScheduleManager extends ContextWrapper {
 
     public void setRepeatingAlarm()
     {
-        if (repeatingAlarmIsSet)
+        int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
+        if (repeatingAlarmIsSet || repeatingInterval < 0)
             return;
 
         Intent intent = new Intent(this, ScheduleRepeatingReciver.class);
@@ -36,10 +37,9 @@ public class ScheduleManager extends ContextWrapper {
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT);
 
-        int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 2000,
+            System.currentTimeMillis(),
             repeatingInterval, pi);
         repeatingAlarmIsSet = true;
     }

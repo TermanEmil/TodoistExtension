@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 
 import com.university.unicornslayer.todoistextension.R;
 
+import java.util.Objects;
+
 public class SharedPrefsUtils extends ContextWrapper {
     private SharedPreferences mSharedPreferences = null;
     private SharedPreferences.Editor mSharedPreferencesEditor = null;
@@ -40,15 +42,11 @@ public class SharedPrefsUtils extends ContextWrapper {
     }
 
     public int getRemindBeforeDue() {
-        return this.getSharedPreferences().getInt(
-            "remindBeforeDue",
-            getResources().getInteger(R.integer.default_mins_remind_before_due) * 1000 * 60);
+        return getMin("remindBeforeDue", R.string.default_mins_remind_before_due);
     }
 
     public int getRemindAtDue() {
-        return this.getSharedPreferences().getInt(
-            "remindAtDue",
-            getResources().getInteger(R.integer.default_mins_remind_at_due) * 1000 * 60);
+        return getMin("remindAtDue", R.string.default_mins_remind_at_due);
     }
 
     // How much time due can be late before it's considered unfinished
@@ -91,9 +89,12 @@ public class SharedPrefsUtils extends ContextWrapper {
     }
 
     public int getNetworkCheckInterval() {
-        return this.getSharedPreferences().getInt(
-            "networkCheckInterval",
-            getResources().getInteger(R.integer.default_mins_network_check) * 1000 * 60);
+        return getMin("networkCheckInterval", R.string.default_mins_network_check);
+    }
+
+    private int getMin(String prefKey, int defaultValueStrId) {
+        final String pref = getSharedPreferences().getString(prefKey, getString(defaultValueStrId));
+        return Integer.parseInt(Objects.requireNonNull(pref)) * 1000 * 60;
     }
 
     public void commitAndWait(final IOnTaskDone onDoneHandler) {

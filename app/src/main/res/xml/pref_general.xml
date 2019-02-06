@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:defaultValue="@integer/default_mins_remind_before_due"
+        android:defaultValue="@string/default_mins_remind_before_due"
         android:entries="@array/pref_before_due_list_titles"
         android:entryValues="@array/pref_before_due_list_values"
         android:key="remindBeforeDue"
@@ -10,7 +10,7 @@
         android:title="@string/pref_title_minutes_to_remind_before_due" />
 
     <ListPreference
-        android:defaultValue="@integer/default_mins_remind_at_due"
+        android:defaultValue="@string/default_mins_remind_at_due"
         android:entries="@array/pref_at_due_list_titles"
         android:entryValues="@array/pref_at_due_list_values"
         android:key="remindAtDue"
@@ -19,7 +19,7 @@
         android:title="@string/pref_title_minutes_to_remind_at_due" />
 
     <ListPreference
-        android:defaultValue="@integer/default_mins_network_check"
+        android:defaultValue="@string/default_mins_network_check"
         android:entries="@array/pref_network_check_interval_list_titles"
         android:entryValues="@array/pref_network_check_interval_list_values"
         android:key="networkCheckInterval"

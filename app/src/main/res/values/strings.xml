@@ -11,11 +11,15 @@
     <string name="unable_to_open_file">Unable to open file</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Default values -->
+    <string name="default_mins_remind_before_due">20</string>
+    <string name="default_mins_remind_at_due">1</string>
+    <string name="default_mins_network_check">180</string>
+
     <!-- Strings related to Settings -->
 
     <!-- General settings -->
     <string name="pref_header_general">General</string>
-
 
     <string name="pref_title_minutes_to_remind_before_due">Time to remind before due</string>
     <string-array name="pref_before_due_list_titles">

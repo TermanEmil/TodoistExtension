@@ -81,9 +81,14 @@ public class ReminderManager extends ContextWrapper {
         items = TodoistItemsUtils.extractWithDueDate(items);
 
         RemindersData remindersData = getRemindersData();
-        remindBeforeDueAgent.createReminders(remindersData, items);
-        remindAtDueAgent.createReminders(remindersData, items);
-        remindAfterDueAgent.createReminders(remindersData, items);
+        if (sharedPrefsUtils.getRemindBeforeDue() > 0)
+            remindBeforeDueAgent.createReminders(remindersData, items);
+
+        if (sharedPrefsUtils.getRemindAtDue() > 0)
+            remindAtDueAgent.createReminders(remindersData, items);
+
+        if (sharedPrefsUtils.getDoRemindAboutUnfinishedTasks())
+            remindAfterDueAgent.createReminders(remindersData, items);
 
         remindersData.removeRedundantData(items, sharedPrefsUtils);
         fileDataManager.writeToFile(getRemindersDataFilename(), gson.toJson(remindersData));
@@ -111,22 +116,21 @@ public class ReminderManager extends ContextWrapper {
         return getString(R.string.reminders_data_filename);
     }
 
-    private long getTimeForNextAlarm(RemindersData remindersData, List<TodoistItem> items
-    ) {
+    private long getTimeForNextAlarm(RemindersData remindersData, List<TodoistItem> items) {
         long now = Calendar.getInstance().getTimeInMillis();
-        long atDue = now + sharedPrefsUtils.getRemindAtDue();
-        long beforeDue = now + sharedPrefsUtils.getRemindBeforeDue();
+        long atDue = sharedPrefsUtils.getRemindAtDue();
+        long beforeDue = sharedPrefsUtils.getRemindBeforeDue();
         long targetDif = Long.MAX_VALUE;
 
         for (TodoistItem item : items) {
             if (item.getDueDate() <= now || remindersData.atDueReminders.containsKey(item.getId()))
                 continue;
 
-            long atDueDif = item.getDueDate() - atDue;
-            long beforeDueDif = item.getDueDate() - beforeDue;
+            long atDueDif = item.getDueDate() - (now + atDue);
+            long beforeDueDif = item.getDueDate() - (now + beforeDue);
 
-            if (atDueDif < 0) atDueDif = Long.MAX_VALUE;
-            if (beforeDueDif < 0) beforeDueDif = Long.MAX_VALUE;
+            if (atDue < 0 || atDueDif < 0) atDueDif = Long.MAX_VALUE;
+            if (beforeDue < 0 || beforeDueDif < 0) beforeDueDif = Long.MAX_VALUE;
 
             long dif = Math.min(atDueDif, beforeDueDif);
             if (dif < targetDif)
@@ -136,15 +140,17 @@ public class ReminderManager extends ContextWrapper {
         if (targetDif == Long.MAX_VALUE)
             return -1;
 
+        // if (atDue < 0 && beforeDue < 0) == always false
         long finalDif;
-        if (targetDif < sharedPrefsUtils.getRemindAtDue())
+        if (atDue >= 0 && targetDif < atDue)
             finalDif = targetDif;
-        else if (targetDif < sharedPrefsUtils.getRemindBeforeDue())
-            finalDif = targetDif - sharedPrefsUtils.getRemindAtDue();
+        else if (beforeDue >= 0 && targetDif < beforeDue)
+            finalDif = targetDif - Math.min(atDue, 0);
         else
-            finalDif = targetDif - sharedPrefsUtils.getRemindBeforeDue();
+            finalDif = targetDif - Math.min(beforeDue, 0);
 
-        if (finalDif > sharedPrefsUtils.getNetworkCheckInterval())
+        int networkCheckInterval = sharedPrefsUtils.getNetworkCheckInterval();
+        if (networkCheckInterval > 0 && finalDif > networkCheckInterval)
             return -1;
 
         return now + finalDif;
