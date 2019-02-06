@@ -6,11 +6,11 @@ import android.content.ContextWrapper;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
-import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIsGood;
-import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
-import com.university.unicornslayer.todoistextension.Utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.utils.ITodoistItemIsGood;
+import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

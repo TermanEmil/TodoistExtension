@@ -5,14 +5,14 @@ import android.content.Context;
 import android.content.ContextWrapper;
 
 import com.google.gson.Gson;
-import com.university.unicornslayer.todoistextension.DataStuff.FileDataManager;
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
+import com.university.unicornslayer.todoistextension.data.FileDataManager;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
 import com.university.unicornslayer.todoistextension.Requests.TodoistItemsRequestHelper;
 import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
-import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
 
 import org.json.JSONObject;
 

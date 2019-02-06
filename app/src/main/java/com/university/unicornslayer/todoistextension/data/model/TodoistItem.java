@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.DataStuff;
+package com.university.unicornslayer.todoistextension.data;
 
 import android.annotation.SuppressLint;
 
@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 @SuppressLint("SimpleDateFormat")
 public class TodoistItem {

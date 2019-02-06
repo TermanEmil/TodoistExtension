@@ -5,9 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.util.Log;
 
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 
 import java.util.Calendar;
 

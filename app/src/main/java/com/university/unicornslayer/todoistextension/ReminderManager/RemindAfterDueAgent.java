@@ -7,11 +7,11 @@ import android.support.v4.app.NotificationCompat;
 import android.text.Html;
 import android.text.format.DateUtils;
 
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
-import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIsGood;
-import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
-import com.university.unicornslayer.todoistextension.Utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.utils.ITodoistItemIsGood;
+import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;

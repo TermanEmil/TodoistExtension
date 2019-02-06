@@ -1,38 +1,32 @@
-package com.university.unicornslayer.todoistextension;
+package com.university.unicornslayer.todoistextension.ui.main;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.university.unicornslayer.todoistextension.AppUpdate.UpdateManager;
-import com.university.unicornslayer.todoistextension.DataStuff.FileDataManager;
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
+import com.university.unicornslayer.todoistextension.data.FileDataManager;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.Permissions.PermissionHelper;
+import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.ReminderManager.ReminderManager;
-import com.university.unicornslayer.todoistextension.Requests.IObjectHandler;
 import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
 import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
+import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
+import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputActivity;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainMvpView {
     private static final int writeToExternalStorageRequestCode = 112;
 
     private SharedPrefsUtils sharedPrefsUtils;
@@ -41,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private PermissionHelper permissionHelper;
     private UpdateManager updateManager;
     private Gson gson;
+
+    private MainPresenter presenter;
 
     private TextView shortInfoView = null;
 
@@ -64,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 displayTheNextItem();
             }
         });
+
+        presenter = new MainPresenter(this);
 
         ScheduleManager scheduleManager = new ScheduleManager(this);
         scheduleManager.setRepeatingAlarm();
@@ -109,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 0L,
                 DateUtils.FORMAT_ABBREV_ALL);
 
-            String itemContent = item.getTrimedContent(sharedPrefsUtils.getMaxContentSizeForShortDisplay());
+            String itemContent = item.getTrimmedContent(sharedPrefsUtils.getMaxContentSizeForShortDisplay());
             String text = String.format("<b>%s</b> <i>%s</i>", Html.escapeHtml(itemContent), relativeTime);
             shortInfoView.setText(Html.fromHtml(text));
         }

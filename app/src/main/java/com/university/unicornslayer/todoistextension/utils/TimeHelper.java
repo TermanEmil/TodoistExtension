@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.Utils;
+package com.university.unicornslayer.todoistextension.utils;
 
 import java.util.Calendar;
 import java.util.Date;

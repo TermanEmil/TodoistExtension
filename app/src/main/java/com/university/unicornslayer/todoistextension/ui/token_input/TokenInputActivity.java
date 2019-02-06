@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension;
+package com.university.unicornslayer.todoistextension.ui.token_input;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -9,8 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.university.unicornslayer.todoistextension.DataStuff.IOnTaskDone;
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.IOnTaskDone;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.Requests.IRequestHandler;
 import com.university.unicornslayer.todoistextension.Requests.RequestResult;
 import com.university.unicornslayer.todoistextension.Requests.TodoistRequestTask;

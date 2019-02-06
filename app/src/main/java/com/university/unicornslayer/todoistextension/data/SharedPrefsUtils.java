@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.DataStuff;
+package com.university.unicornslayer.todoistextension.data;
 
 import android.app.ProgressDialog;
 import android.content.Context;

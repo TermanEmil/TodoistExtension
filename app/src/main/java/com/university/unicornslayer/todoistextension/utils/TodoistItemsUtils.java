@@ -1,12 +1,9 @@
-package com.university.unicornslayer.todoistextension.Utils;
+package com.university.unicornslayer.todoistextension.utils;
 
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
-import com.university.unicornslayer.todoistextension.ReminderManager.Reminder;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class TodoistItemsUtils {

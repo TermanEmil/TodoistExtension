@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension;
+package com.university.unicornslayer.todoistextension.ui.settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

@@ -17,14 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TokenInputActivity" />
+        <activity android:name=".ui.token_input.TokenInputActivity" />
 
         <receiver
             android:name=".Scheduling.ScheduleRepeatingReciver"
@@ -49,7 +49,7 @@
         </provider>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
     </application>
 

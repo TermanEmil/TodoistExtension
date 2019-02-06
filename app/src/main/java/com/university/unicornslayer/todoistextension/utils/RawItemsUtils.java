@@ -1,6 +1,6 @@
-package com.university.unicornslayer.todoistextension.Utils;
+package com.university.unicornslayer.todoistextension.utils;
 
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
