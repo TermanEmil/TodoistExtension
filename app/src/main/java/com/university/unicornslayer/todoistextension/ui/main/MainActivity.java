@@ -2,9 +2,9 @@ package com.university.unicornslayer.todoistextension.ui.main;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.university.unicornslayer.todoistextension.AppUpdate.UpdateManager;
-import com.university.unicornslayer.todoistextension.data.FileDataManager;
-import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.Permissions.PermissionHelper;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.ReminderManager.ReminderManager;
 import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
 import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
+import com.university.unicornslayer.todoistextension.data.FileDataManager;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
 import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputActivity;
 

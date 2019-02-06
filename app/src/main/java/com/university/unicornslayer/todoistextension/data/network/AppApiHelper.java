@@ -4,7 +4,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseListener;
-import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.utils.RawItemsUtils;
 
 import org.json.JSONArray;

@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.data;
+package com.university.unicornslayer.todoistextension.data.model;
 
 import android.annotation.SuppressLint;
 
@@ -28,7 +28,7 @@ public class TodoistItem {
         json = jsonObject;
     }
 
-    public String getTrimedContent(int maxSize) {
+    public String getTrimmedContent(int maxSize) {
         if (getContent().length() <= maxSize)
             return getContent();
 
