@@ -5,6 +5,8 @@ import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import java.util.List;
 
 public interface ApiHelper {
+    void cancelGetAllItems();
+
     interface GetAllItemsListener {
         void onResponse(List<TodoistItem> items);
         void onError(int errorCode);
@@ -16,5 +18,8 @@ public interface ApiHelper {
     }
 
     void validateToken(ValidateTokenListener listener);
+
+    void cancelTokenValiation();
+
     void getAllItems(GetAllItemsListener listener);
 }

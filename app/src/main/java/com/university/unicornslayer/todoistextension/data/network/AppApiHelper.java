@@ -17,6 +17,11 @@ import okhttp3.Response;
 
 public class AppApiHelper implements ApiHelper {
     private static final String url = "https://todoist.com/api/v7/sync";
+
+    private static final String tokenValidationTag = "token-validation";
+    private static final String getAllItemsTag = "get-all-items";
+
+
     private final String token;
 
     public AppApiHelper(String token) {
@@ -28,6 +33,7 @@ public class AppApiHelper implements ApiHelper {
         AndroidNetworking
             .post(url)
             .addBodyParameter("token", token)
+            .setTag(tokenValidationTag)
             .build()
             .getAsOkHttpResponse(new OkHttpResponseListener() {
                 @Override
@@ -54,12 +60,18 @@ public class AppApiHelper implements ApiHelper {
     }
 
     @Override
+    public void cancelTokenValiation() {
+        AndroidNetworking.cancel(tokenValidationTag);
+    }
+
+    @Override
     public void getAllItems(final GetAllItemsListener listener) {
         AndroidNetworking
             .post(url)
             .addBodyParameter("token", token)
             .addBodyParameter("resource_types", "[\"items\"]")
             .addBodyParameter("sync_token", "*")
+            .setTag(getAllItemsTag)
             .build()
             .getAsJSONObject(new JSONObjectRequestListener() {
                 @Override
@@ -77,5 +89,10 @@ public class AppApiHelper implements ApiHelper {
                     listener.onError(anError.getErrorCode());
                 }
             });
+    }
+
+    @Override
+    public void cancelGetAllItems() {
+        AndroidNetworking.cancel(getAllItemsTag);
     }
 }
