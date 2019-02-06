@@ -12,12 +12,14 @@ public interface ApiHelper {
         void onError(int errorCode);
     }
 
-    interface ValidateTokenListener {
+    interface TokenValidationListener {
         void onResponse(boolean isValid);
         void onError(int errorCode);
     }
 
-    void validateToken(ValidateTokenListener listener);
+    void setToken(String token);
+
+    void validateToken(TokenValidationListener listener);
 
     void cancelTokenValiation();
 

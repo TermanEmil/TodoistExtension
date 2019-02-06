@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
-import java.util.List;
 
 import okhttp3.Response;
 
@@ -21,15 +20,18 @@ public class AppApiHelper implements ApiHelper {
     private static final String tokenValidationTag = "token-validation";
     private static final String getAllItemsTag = "get-all-items";
 
+    private String token = null;
 
-    private final String token;
+    public AppApiHelper() {
+    }
 
-    public AppApiHelper(String token) {
+    @Override
+    public void setToken(String token) {
         this.token = token;
     }
 
     @Override
-    public void validateToken(final ValidateTokenListener listener) {
+    public void validateToken(final TokenValidationListener listener) {
         AndroidNetworking
             .post(url)
             .addBodyParameter("token", token)
