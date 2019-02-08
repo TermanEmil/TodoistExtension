@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.onResume();
 
         if (sharedPrefsUtils.getToken() == null)
             gotoInputToken();

@@ -3,6 +3,7 @@ package com.university.unicornslayer.todoistextension.ui.token_input;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.AppPrefHelper;
 
 public class TokenInputActivity extends AppCompatActivity implements TokenInputMvpView {
     private EditText tokenInput;
@@ -30,7 +32,7 @@ public class TokenInputActivity extends AppCompatActivity implements TokenInputM
 
         presenter = new TokenInputPresenter(
             this,
-            new SharedPrefsUtils(this),
+            AppPrefHelper.getInstance(getApplicationContext()),
             new AppApiHelper());
         presenter.onCreate();
     }
@@ -56,6 +58,15 @@ public class TokenInputActivity extends AppCompatActivity implements TokenInputM
 
     private void toastMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 
     @Override

@@ -2,28 +2,29 @@ package com.university.unicornslayer.todoistextension.ui.token_input;
 
 import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 
 import java.net.HttpURLConnection;
 
 public class TokenInputPresenter {
     private final TokenInputMvpView view;
-    private final SharedPrefsUtils sharedPrefsUtils;
+    private final TokenPrefHelper tokenPrefHelper;
     private final ApiHelper apiHelper;
 
     private String tokenBeingValidated;
 
     public TokenInputPresenter(
         TokenInputMvpView view,
-        SharedPrefsUtils sharedPrefsUtils,
+        TokenPrefHelper tokenPrefHelper,
         ApiHelper apiHelper
     ) {
         this.view = view;
-        this.sharedPrefsUtils = sharedPrefsUtils;
+        this.tokenPrefHelper = tokenPrefHelper;
         this.apiHelper = apiHelper;
     }
 
     public void onCreate() {
-        String token = sharedPrefsUtils.getToken();
+        String token = tokenPrefHelper.getToken();
         if (token != null)
             view.setTokenInputText(token);
     }
@@ -52,6 +53,8 @@ public class TokenInputPresenter {
 
     public void cancelTokenValidation() {
         apiHelper.cancelTokenValiation();
+        view.enableUserInput();
+        view.hideRequestIsBeingProcessed();
     }
 
     private void onTokenValidationDone(boolean tokenIsValid) {
@@ -62,7 +65,7 @@ public class TokenInputPresenter {
             return;
         }
 
-        sharedPrefsUtils.setToken(tokenBeingValidated);
+        tokenPrefHelper.setToken(tokenBeingValidated);
         view.showTokenIsSaved();
         view.enableUserInput();
         view.hideRequestIsBeingProcessed();
