@@ -5,113 +5,123 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.university.unicornslayer.todoistextension.AppUpdate.UpdateManager;
-import com.university.unicornslayer.todoistextension.Permissions.PermissionHelper;
 import com.university.unicornslayer.todoistextension.R;
-import com.university.unicornslayer.todoistextension.ReminderManager.ReminderManager;
-import com.university.unicornslayer.todoistextension.Requests.ITodoistItemsHandler;
-import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
-import com.university.unicornslayer.todoistextension.data.FileDataManager;
-import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.data.local.AppLocalDataManager;
+import com.university.unicornslayer.todoistextension.data.local.LocalDataManager;
+import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
+import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.AppTokenPrefHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.AtDuePrefs;
+import com.university.unicornslayer.todoistextension.data.prefs.BeforeDuePrefs;
+import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
 import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputActivity;
-
-import java.util.Calendar;
-import java.util.List;
+import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.files.AppFileIOHelper;
+import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
+import com.university.unicornslayer.todoistextension.utils.reminder.AppReminderManager;
+import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
+import com.university.unicornslayer.todoistextension.utils.reminder.agent.RemindAtDueAgent;
+import com.university.unicornslayer.todoistextension.utils.reminder.agent.RemindBeforeDueAgent;
 
 public class MainActivity extends AppCompatActivity implements MainMvpView {
     private static final int writeToExternalStorageRequestCode = 112;
 
-    private SharedPrefsUtils sharedPrefsUtils;
-    private ReminderManager reminderManager;
-    private FileDataManager fileDataManager;
-    private PermissionHelper permissionHelper;
-    private UpdateManager updateManager;
-    private Gson gson;
-
     private MainPresenter presenter;
-
-    private TextView shortInfoView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPrefsUtils = new SharedPrefsUtils(this);
-        fileDataManager = new FileDataManager(this);
-        gson = new Gson();
+        TokenPrefHelper tokenPrefHelper = new AppTokenPrefHelper(getApplicationContext());
+        FileIOHelper fileIOHelper = new AppFileIOHelper(getApplicationContext());
+        LocalDataManager localDataManager = new AppLocalDataManager(
+            getString(R.string.reminders_data_filename),
+            fileIOHelper);
 
-        permissionHelper = new PermissionHelper(this, this);
-        updateManager = new UpdateManager(this, permissionHelper);
+        TodoistNotifHelper notifHelper = new TodoistNotifHelper(getApplicationContext());
 
-        reminderManager = new ReminderManager(this);
-        reminderManager.setVerbose(true);
-        reminderManager.setTodoistItemsHandler(new ITodoistItemsHandler() {
-            @Override
-            public void onDone(List<TodoistItem> items) {
-                displayTheNextItem();
-            }
-        });
+        ReminderManager reminderManager = new AppReminderManager(localDataManager);
+        reminderManager.addReminderAgent(
+            new RemindBeforeDueAgent(new BeforeDuePrefs(getApplicationContext()), notifHelper));
+        reminderManager.addReminderAgent(
+            new RemindAtDueAgent(new AtDuePrefs(getApplicationContext()), notifHelper));
 
-        presenter = new MainPresenter(this);
+        ApiHelper apiHelper = new AppApiHelper();
 
-        ScheduleManager scheduleManager = new ScheduleManager(this);
-        scheduleManager.setRepeatingAlarm();
+        presenter = new MainPresenter(this, tokenPrefHelper, reminderManager, apiHelper);
+
+//        ScheduleManager scheduleManager = new ScheduleManager(this);
+//        scheduleManager.setRepeatingAlarm();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         presenter.onResume();
-
-        if (sharedPrefsUtils.getToken() == null)
-            gotoInputToken();
-
-        displayTheNextItem();
     }
 
-    private void gotoInputToken() {
+    @Override
+    public void gotoInputTokenView() {
         Intent intent = new Intent(this, TokenInputActivity.class);
         startActivity(intent);
     }
 
-    public void onCheckReminders(View view) {
-        reminderManager.checkNotifications();
+    @Override
+    public void showFailedToPostNotifications() {
+        Toast.makeText(this, getString(R.string.error_failed_to_post_notifs), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showServiceUnavailableError() {
+        Toast.makeText(this, getString(R.string.error_service_unavailable), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showFailedToGetItems() {
+        Toast.makeText(this, getString(R.string.error_failed_to_get_items), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void gotoSettingsView() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
+
+    public void onCheckRemindersBtnPressed(View view) {
+        presenter.onCheckRemindersBtnPressed();
     }
 
     private void displayTheNextItem() {
-        if (shortInfoView == null)
-            shortInfoView = findViewById(R.id.shortInfo);
-
-        String fileContent = fileDataManager.readFromFile(getString(R.string.next_closest_item));
-        if (fileContent == null) {
-            shortInfoView.setText(getString(R.string.msg_when_no_tasks_in_future));
-            return;
-        } else {
-            TodoistItem item = gson.fromJson(fileContent, TodoistItem.class);
-            if (item == null || !item.dueIsInFuture()) {
-                shortInfoView.setText(getString(R.string.msg_when_no_tasks_in_future));
-                return;
-            }
-
-            CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
-                item.getDueDate(),
-                Calendar.getInstance().getTimeInMillis(),
-                0L,
-                DateUtils.FORMAT_ABBREV_ALL);
-
-            String itemContent = item.getTrimmedContent(sharedPrefsUtils.getMaxContentSizeForShortDisplay());
-            String text = String.format("<b>%s</b> <i>%s</i>", Html.escapeHtml(itemContent), relativeTime);
-            shortInfoView.setText(Html.fromHtml(text));
-        }
+//        if (shortInfoView == null)
+//            shortInfoView = findViewById(R.id.shortInfo);
+//
+//        String fileContent = fileDataManager.readFromFile(getString(R.string.next_closest_item));
+//        if (fileContent == null) {
+//            shortInfoView.setText(getString(R.string.msg_when_no_tasks_in_future));
+//            return;
+//        } else {
+//            TodoistItem item = gson.fromJson(fileContent, TodoistItem.class);
+//            if (item == null || !item.dueIsInFuture()) {
+//                shortInfoView.setText(getString(R.string.msg_when_no_tasks_in_future));
+//                return;
+//            }
+//
+//            CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
+//                item.getDueDate(),
+//                Calendar.getInstance().getTimeInMillis(),
+//                0L,
+//                DateUtils.FORMAT_ABBREV_ALL);
+//
+//            String itemContent = item.getTrimmedContent(sharedPrefsUtils.getMaxContentSizeForShortDisplay());
+//            String text = String.format("<b>%s</b> <i>%s</i>", Html.escapeHtml(itemContent), relativeTime);
+//            shortInfoView.setText(Html.fromHtml(text));
+//        }
     }
 
     @Override
@@ -124,17 +134,15 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
         if (requestCode == getResources().getInteger(R.integer.writeExternlPermissionRequestNb)) {
             boolean granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-            permissionHelper.onGetWriteExternalStoragePermissionDone(granted);
+//            permissionHelper.onGetWriteExternalStoragePermissionDone(granted);
         }
     }
 
     public void onCheckForUpdates(View view) {
-        updateManager.checkForUpdates();
+//        updateManager.checkForUpdates();
     }
 
     public void onClickSettings(View view) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        presenter.onClickSettings();
     }
 }

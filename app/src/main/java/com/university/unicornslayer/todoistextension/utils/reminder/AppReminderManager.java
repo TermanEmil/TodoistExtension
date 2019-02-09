@@ -29,8 +29,7 @@ public class AppReminderManager implements ReminderManager {
         localDataManager.loadData();
         for (ReminderAgent reminderAgent : reminderAgents) {
             reminderAgent.createReminders(
-                localDataManager.getDataWithKey(reminderAgent.getResourceKey()),
-                items);
+                localDataManager.getDataFromKey(reminderAgent.getResourceKey()), items);
         }
 
         localDataManager.saveData();

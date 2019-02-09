@@ -27,7 +27,7 @@ public class ReminderManager extends ContextWrapper {
     private final Gson gson;
 
     private final RemindBeforeDueAgent remindBeforeDueAgent;
-    private final RemindAtDueAgent remindAtDueAgent;
+    private final RemindAtDueAgent2 remindAtDueAgent;
     private final RemindAfterDueAgent remindAfterDueAgent;
 
     private boolean verbose;
@@ -42,7 +42,7 @@ public class ReminderManager extends ContextWrapper {
         gson = new Gson();
 
         remindBeforeDueAgent = new RemindBeforeDueAgent(this);
-        remindAtDueAgent = new RemindAtDueAgent(this);
+        remindAtDueAgent = new RemindAtDueAgent2(this);
         remindAfterDueAgent = new RemindAfterDueAgent(this);
     }
 

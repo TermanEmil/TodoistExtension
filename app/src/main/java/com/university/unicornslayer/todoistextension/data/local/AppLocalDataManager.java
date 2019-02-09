@@ -1,6 +1,7 @@
 package com.university.unicornslayer.todoistextension.data.local;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
 
@@ -13,9 +14,9 @@ public class AppLocalDataManager implements LocalDataManager {
     private final String fileName;
     private final FileIOHelper fileIOHelper;
     private final Gson gson;
+    private String loadedDataStr = null;
 
     private Map<String, Map<Integer, Reminder>> data;
-    private boolean dataHasChanged;
 
     public AppLocalDataManager(String fileName, FileIOHelper fileIOHelper) {
         this.fileName = fileName;
@@ -34,37 +35,30 @@ public class AppLocalDataManager implements LocalDataManager {
 
         if (dataStr == null) {
             data = new HashMap<>();
-            dataHasChanged = true;
         }  else {
-            data = gson.fromJson(dataStr, data.getClass());
-            dataHasChanged = false;
+            data = gson.fromJson(dataStr, new TypeToken<Map<String, Map<Integer, Reminder>>>(){}.getType());
         }
+
+        loadedDataStr = dataStr;
     }
 
     @Override
     public void saveData() throws IOException {
         if (data == null) {
             data = new HashMap<>();
-            dataHasChanged = true;
         }
 
-        if (dataHasChanged) {
-            fileIOHelper.writeToFile(fileName, gson.toJson(data));
-            dataHasChanged = false;
-        }
+        String dataToJson = gson.toJson(data);
+        if (loadedDataStr == null || !loadedDataStr.equals(dataToJson))
+            fileIOHelper.writeToFile(fileName, dataToJson);
     }
 
     @Override
-    public Map<Integer, Reminder> getDataWithKey(String key) {
-        if (!data.containsKey(key))
-            return null;
-        else
-            return data.get(key);
-    }
+    public Map<Integer, Reminder> getDataFromKey(String key) {
+        if (!data.containsKey(key)) {
+            data.put(key, new HashMap<Integer, Reminder>());
+        }
 
-    @Override
-    public void setDataWithKey(String key, Map<Integer, Reminder> newData) {
-        data.put(key, newData);
-        dataHasChanged = true;
+        return data.get(key);
     }
 }

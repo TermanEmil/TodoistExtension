@@ -15,13 +15,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class RemindAtDueAgent extends ContextWrapper {
+public class RemindAtDueAgent2 extends ContextWrapper {
     private static final SimpleDateFormat shortTimeFormat = new SimpleDateFormat("HH:mm");
 
     private final SharedPrefsUtils sharedPrefsUtils;
     private final TodoistNotifHelper notifHelper;
 
-    public RemindAtDueAgent(Context context) {
+    public RemindAtDueAgent2(Context context) {
         super(context);
 
         sharedPrefsUtils = new SharedPrefsUtils(this);

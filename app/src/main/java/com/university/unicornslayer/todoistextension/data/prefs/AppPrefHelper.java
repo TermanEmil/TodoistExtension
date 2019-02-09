@@ -15,6 +15,7 @@ public class AppPrefHelper implements TokenPrefHelper {
 
     private final SharedPreferences sharedPrefs;
     private final Context context;
+    private final PrefsUtils prefsUtils;
 
     public static AppPrefHelper getInstance(Context context) {
         if (instance == null)
@@ -26,6 +27,7 @@ public class AppPrefHelper implements TokenPrefHelper {
     public AppPrefHelper(Context context) {
         this.context = context;
         this.sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        this.prefsUtils = new PrefsUtils(context, sharedPrefs);
     }
 
     /*
@@ -98,9 +100,4 @@ public class AppPrefHelper implements TokenPrefHelper {
 //    public int getNetworkCheckInterval() {
 //        return getMin("networkCheckInterval", R.string.default_mins_network_check);
 //    }
-
-    private int getMin(String prefKey, int defaultValueStrId) {
-        final String pref = sharedPrefs.getString(prefKey, context.getString(defaultValueStrId));
-        return Integer.parseInt(Objects.requireNonNull(pref)) * 1000 * 60;
-    }
 }

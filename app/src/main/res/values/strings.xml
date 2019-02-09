@@ -94,5 +94,7 @@
     <string name="token_saved_msg">Token saved</string>
     <string name="error_token_validation_failed">Token validation failed</string>
     <string name="error_service_unavailable">Service unavailable</string>
+    <string name="error_failed_to_post_notifs">Failed to post notifications</string>
+    <string name="error_failed_to_get_items">Failed to get the items from the server</string>
 
 </resources>

@@ -10,7 +10,5 @@ public interface LocalDataManager {
 
     void saveData() throws IOException;
 
-    Map<Integer, Reminder> getDataWithKey(String key);
-
-    void setDataWithKey(String key, Map<Integer, Reminder> newData);
+    Map<Integer, Reminder> getDataFromKey(String key);
 }
