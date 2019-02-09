@@ -7,6 +7,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
 
@@ -39,13 +40,13 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ RelativeToNowReminderAgent.class, RingtoneManager.class })
-public class RelativeToNowReminderAgentTest {
+@PrepareForTest({ ReminderRelativeToNowAgent.class, RingtoneManager.class })
+public class ReminderRelativeToNowAgentTest {
     private static final long intervalMin = 0;
     private static final long intervalMax = 10;
     private static final String defaultItemContent = "foo";
 
-    private RelativeToNowReminderAgent target;
+    private ReminderRelativeToNowAgent target;
 
     @Mock
     private RelativeToNowPrefsProvider prefs;
@@ -63,7 +64,7 @@ public class RelativeToNowReminderAgentTest {
 
     @Before
     public void setUp() throws Exception {
-        target = new RelativeToNowReminderAgent(prefs, notifHelper) {
+        target = new ReminderRelativeToNowAgent(prefs, notifHelper) {
             @Override
             public String getResourceKey() {
                 return "test key";
@@ -352,6 +353,66 @@ public class RelativeToNowReminderAgentTest {
 
         // Shouldn't notify since it's saved in the data
         verifyNoMoreInteractions(notifHelper);
+    }
+
+    @Test
+    public void getNextItemToRemind_NotInRange_GiveNull() throws Exception {
+        setDefaultPrefs();
+        TodoistItem item = buildTodoistItem(now.getTime() + intervalMax - 1);
+        when(item.dueIsInFuture(any(long.class))).thenReturn(Boolean.TRUE);
+
+        // Create an array with the mocked item
+        List<TodoistItem> items = new ArrayList<>();
+        items.add(item);
+
+        // Init empty data
+        Map<Integer, Reminder> data = new HashMap<>();
+
+        NextReminderModel result = target.getNextItemToRemind(items);
+
+        assert result == null;
+    }
+
+    @Test
+    public void getNextItemToRemind_InRange_ReturnIt() throws Exception {
+        setDefaultPrefs();
+        TodoistItem item = buildTodoistItem(now.getTime() + intervalMax);
+        when(item.dueIsInFuture(any(long.class))).thenReturn(Boolean.TRUE);
+
+        // Create an array with the mocked item
+        List<TodoistItem> items = new ArrayList<>();
+        items.add(item);
+
+        // Init empty data
+        Map<Integer, Reminder> data = new HashMap<>();
+
+        NextReminderModel result = target.getNextItemToRemind(items);
+
+        assert result != null;
+        assert result.getItem() == item;
+        assert result.getWhen() == item.getDueDate() - now.getTime() - prefs.getIntervalMax();
+    }
+
+    @Test
+    public void getNextItemToRemind_MultipleInRange_ReturnClosest() throws Exception {
+        setDefaultPrefs();
+
+        TodoistItem item1 = buildTodoistItem(now.getTime() + intervalMax + 2);
+        when(item1.dueIsInFuture(any(long.class))).thenReturn(Boolean.TRUE);
+
+        TodoistItem item2 = buildTodoistItem(now.getTime() + intervalMax + 1);
+        when(item2.dueIsInFuture(any(long.class))).thenReturn(Boolean.TRUE);
+
+        // Create an array with the mocked item
+        List<TodoistItem> items = new ArrayList<>();
+        items.add(item1);
+        items.add(item2);
+
+        NextReminderModel result = target.getNextItemToRemind(items);
+
+        assert result != null;
+        assert result.getItem() == item2;
+        assert result.getWhen() == item2.getDueDate() - now.getTime() - prefs.getIntervalMax();
     }
 
     private void setDefaultPrefs() {

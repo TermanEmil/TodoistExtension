@@ -1,5 +1,6 @@
 package com.university.unicornslayer.todoistextension.ui.main;
 
+import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
@@ -14,17 +15,24 @@ public class MainPresenter {
     private final TokenPrefHelper tokenPrefHelper;
     private final ReminderManager reminderManager;
     private final ApiHelper apiHelper;
+    private final ScheduleManager scheduleManager;
 
     public MainPresenter(
         MainMvpView view,
         TokenPrefHelper tokenPrefHelper,
         ReminderManager reminderManager,
-        ApiHelper apiHelper
+        ApiHelper apiHelper,
+        ScheduleManager scheduleManager
     ) {
         this.view = view;
         this.tokenPrefHelper = tokenPrefHelper;
         this.reminderManager = reminderManager;
         this.apiHelper = apiHelper;
+        this.scheduleManager = scheduleManager;
+    }
+
+    public void onCreate() {
+        scheduleManager.setRepeatingAlarm();
     }
 
     public void onResume() {

@@ -1,38 +1,37 @@
-package com.university.unicornslayer.todoistextension.Scheduling;
+package com.university.unicornslayer.todoistextension.utils.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 
-import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.utils.alarms.recivers.ScheduleAlarmReciver;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 
 import java.util.Calendar;
 
-public class ScheduleManager extends ContextWrapper {
+public class AppScheduleManager implements ScheduleManager {
     private final AlarmManager alarmManager;
     private final SharedPrefsUtils sharedPrefsUtils;
+    private final Context context;
+    private boolean repeatingAlarmIsSet;
 
-    private boolean repeatingAlarmIsSet = false;
-
-    public ScheduleManager(Context context) {
-        super(context);
-
-        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        sharedPrefsUtils = new SharedPrefsUtils(this);
+    public AppScheduleManager(Context context) {
+        this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        this.sharedPrefsUtils = new SharedPrefsUtils(context);
+        this.context = context;
     }
 
+    @Override
     public void setRepeatingAlarm()
     {
         int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
         if (repeatingAlarmIsSet || repeatingInterval < 0)
             return;
 
-        Intent intent = new Intent(this, ScheduleAlarmReciver.class);
+        Intent intent = new Intent(context, ScheduleAlarmReciver.class);
         PendingIntent pi = PendingIntent.getBroadcast(
-            this,
+            context,
             10,
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT);
@@ -44,10 +43,11 @@ public class ScheduleManager extends ContextWrapper {
         repeatingAlarmIsSet = true;
     }
 
+    @Override
     public void setExactAlarm(long localTargetTime) {
-        Intent intent = new Intent(this, ScheduleAlarmReciver.class);
+        Intent intent = new Intent(context, ScheduleAlarmReciver.class);
         PendingIntent pi = PendingIntent.getBroadcast(
-            this,
+            context,
             1,
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT);

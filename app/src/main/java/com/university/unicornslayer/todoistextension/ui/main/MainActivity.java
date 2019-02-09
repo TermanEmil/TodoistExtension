@@ -9,23 +9,20 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.university.unicornslayer.todoistextension.R;
+import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
 import com.university.unicornslayer.todoistextension.data.local.AppLocalDataManager;
 import com.university.unicornslayer.todoistextension.data.local.LocalDataManager;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
 import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
 import com.university.unicornslayer.todoistextension.data.prefs.AppTokenPrefHelper;
-import com.university.unicornslayer.todoistextension.data.prefs.AtDuePrefs;
-import com.university.unicornslayer.todoistextension.data.prefs.BeforeDuePrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
 import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputActivity;
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.files.AppFileIOHelper;
 import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
-import com.university.unicornslayer.todoistextension.utils.reminder.AppReminderManager;
 import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
-import com.university.unicornslayer.todoistextension.utils.reminder.agent.RemindAtDueAgent;
-import com.university.unicornslayer.todoistextension.utils.reminder.agent.RemindBeforeDueAgent;
+import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManagerBuilder;
 
 public class MainActivity extends AppCompatActivity implements MainMvpView {
     private static final int writeToExternalStorageRequestCode = 112;
@@ -45,18 +42,14 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
 
         TodoistNotifHelper notifHelper = new TodoistNotifHelper(getApplicationContext());
 
-        ReminderManager reminderManager = new AppReminderManager(localDataManager);
-        reminderManager.addReminderAgent(
-            new RemindBeforeDueAgent(new BeforeDuePrefs(getApplicationContext()), notifHelper));
-        reminderManager.addReminderAgent(
-            new RemindAtDueAgent(new AtDuePrefs(getApplicationContext()), notifHelper));
+        ReminderManager reminderManager = ReminderManagerBuilder.buildDefault(
+            getApplicationContext(), notifHelper, localDataManager);
 
         ApiHelper apiHelper = new AppApiHelper();
+        ScheduleManager scheduleManager = new ScheduleManager(this);
 
-        presenter = new MainPresenter(this, tokenPrefHelper, reminderManager, apiHelper);
-
-//        ScheduleManager scheduleManager = new ScheduleManager(this);
-//        scheduleManager.setRepeatingAlarm();
+        presenter = new MainPresenter(this, tokenPrefHelper, reminderManager, apiHelper, scheduleManager);
+        presenter.onCreate();
     }
 
     @Override

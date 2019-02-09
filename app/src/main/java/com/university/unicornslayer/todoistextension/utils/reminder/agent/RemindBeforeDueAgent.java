@@ -3,7 +3,7 @@ package com.university.unicornslayer.todoistextension.utils.reminder.agent;
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 
-public class RemindBeforeDueAgent extends RelativeToNowReminderAgent {
+public class RemindBeforeDueAgent extends ReminderRelativeToNowAgent {
     public RemindBeforeDueAgent(RelativeToNowPrefsProvider prefsProvider, TodoistNotifHelper notifHelper) {
         super(prefsProvider, notifHelper);
     }
