@@ -2,24 +2,16 @@ package com.university.unicornslayer.todoistextension.utils.reminder.agent;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
-import com.university.unicornslayer.todoistextension.utils.reminder.model.AtDuePrefsProvider;
-import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
+import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 
-import java.util.List;
-import java.util.Map;
-
-public class RemindAtDueAgent implements ReminderAgent {
-    private final AtDuePrefsProvider prefs;
-    private final TodoistNotifHelper notifHelper;
-
-    public RemindAtDueAgent(AtDuePrefsProvider prefs, TodoistNotifHelper notifHelper) {
-        this.prefs = prefs;
-        this.notifHelper = notifHelper;
+public class RemindAtDueAgent extends RelativeToNowReminderAgent {
+    public RemindAtDueAgent(RelativeToNowPrefsProvider prefs, TodoistNotifHelper notifHelper) {
+        super(prefs, notifHelper);
     }
 
     @Override
-    public void createReminders(Map<Integer, Reminder> data, List<TodoistItem> items) {
-
+    protected String createNotifMsg(TodoistItem item) {
+        return "NOW! " + super.createNotifMsg(item);
     }
 
     @Override
