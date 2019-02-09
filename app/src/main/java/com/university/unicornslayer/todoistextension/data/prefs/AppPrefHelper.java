@@ -47,12 +47,12 @@ public class AppPrefHelper implements TokenPrefHelper {
      */
 
 //    @Override
-//    public int getRemindBeforeDueMax() {
+//    public int getIntervalMax() {
 //        return getMin("remindBeforeDue", R.string.default_mins_remind_before_due);
 //    }
 //
 //    @Override
-//    public int getRemindBeforeDueMin() {
+//    public int getIntervalMin() {
 //        return getMin("remindAtDue", R.string.default_mins_remind_at_due);
 //    }
 //
@@ -61,7 +61,7 @@ public class AppPrefHelper implements TokenPrefHelper {
 //        return sharedPrefs.getInt("dueCanBeLate", 1000 * 60 * 5);
 //    }
 //
-//    public boolean getProduceSoundBeforeDue() {
+//    public boolean produceSound() {
 //        return sharedPrefs.getBoolean(
 //            "produceSoundBeforeDue",
 //            context.getResources().getBoolean(R.bool.default_before_due_make_sound));

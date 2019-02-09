@@ -48,9 +48,9 @@ public class RemindAtDueAgent extends ContextWrapper {
             return;
 
         for (TodoistItem item : items) {
-            NotificationCompat.Builder builder = notifHelper.getBaseBuilder(
-                item.getContent(),
-                createTitle(item));
+            NotificationCompat.Builder builder = notifHelper.getBaseBuilder()
+                .setContentTitle(item.getContent())
+                .setContentText(createTitle(item));
 
             if (sharedPrefsUtils.getProduceSoundAtDue())
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));

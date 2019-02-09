@@ -23,11 +23,9 @@ public class TodoistNotifHelper extends ContextWrapper {
         notificationManager = getSystemService(NotificationManager.class);
     }
 
-    public NotificationCompat.Builder getBaseBuilder(String title, String content) {
+    public NotificationCompat.Builder getBaseBuilder() {
         return new NotificationCompat.Builder(this, notifChannelId)
                 .setSmallIcon(R.drawable.todoist_logo)
-                .setContentTitle(title)
-                .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
     }
 

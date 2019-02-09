@@ -7,7 +7,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
-import com.university.unicornslayer.todoistextension.utils.reminder.model.BeforeDuePrefsProvider;
+import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
 
 import org.junit.Before;
@@ -27,25 +27,28 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ RemindBeforeDueAgent.class, RingtoneManager.class })
-public class RemindBeforeDueAgentTest {
+@PrepareForTest({ RelativeToNowReminderAgent.class, RingtoneManager.class })
+public class RelativeToNowReminderAgentTest {
     private static final long intervalMin = 0;
     private static final long intervalMax = 10;
     private static final String defaultItemContent = "foo";
 
-    private RemindBeforeDueAgent target;
+    private RelativeToNowReminderAgent target;
 
     @Mock
-    private BeforeDuePrefsProvider prefs;
+    private RelativeToNowPrefsProvider prefs;
 
     @Mock
     private TodoistNotifHelper notifHelper;
@@ -60,7 +63,15 @@ public class RemindBeforeDueAgentTest {
 
     @Before
     public void setUp() throws Exception {
-        target = new RemindBeforeDueAgent(prefs, notifHelper);
+        target = new RelativeToNowReminderAgent(prefs, notifHelper) {
+            @Override
+            public String getResourceKey() {
+                return "test key";
+            }
+        };
+
+        when(notifBuilder.setContentTitle(anyString())).thenReturn(notifBuilder);
+        when(notifBuilder.setContentText(anyString())).thenReturn(notifBuilder);
 
         now = new Date(0);
 
@@ -75,7 +86,7 @@ public class RemindBeforeDueAgentTest {
 
     @Test
     public void createReminders_ItsDisabled_DoNothing() {
-        when(prefs.getRemindBeforeDueMax()).thenReturn(new Long(-1));
+        when(prefs.getIntervalMax()).thenReturn(new Long(-1));
         when(testItems.size()).thenReturn(1);
 
         target.createReminders(null, testItems);
@@ -86,7 +97,7 @@ public class RemindBeforeDueAgentTest {
 
     @Test
     public void createReminders_NoItems_DoNothing() {
-        when(prefs.getRemindBeforeDueMax()).thenReturn(new Long(1));
+        when(prefs.getIntervalMax()).thenReturn(new Long(1));
         when(testItems.size()).thenReturn(0);
 
         target.createReminders(null, testItems);
@@ -98,8 +109,8 @@ public class RemindBeforeDueAgentTest {
     @Test
     public void createReminders_ItemNotInRange_DoNothing() throws Exception {
         // Set limits
-        when(prefs.getRemindBeforeDueMin()).thenReturn(intervalMin);
-        when(prefs.getRemindBeforeDueMax()).thenReturn(intervalMax);
+        when(prefs.getIntervalMin()).thenReturn(intervalMin);
+        when(prefs.getIntervalMax()).thenReturn(intervalMax);
 
         // Mock the item
         TodoistItem item = mock(TodoistItem.class);
@@ -118,8 +129,8 @@ public class RemindBeforeDueAgentTest {
     @Test
     public void createReminders_ItemAlreadyMentioned_DoNothing() throws Exception {
         // Set limits
-        when(prefs.getRemindBeforeDueMin()).thenReturn(intervalMin);
-        when(prefs.getRemindBeforeDueMax()).thenReturn(intervalMax);
+        when(prefs.getIntervalMin()).thenReturn(intervalMin);
+        when(prefs.getIntervalMax()).thenReturn(intervalMax);
 
         // Mock the item. He should be in range.
         TodoistItem item = mock(TodoistItem.class);
@@ -155,7 +166,7 @@ public class RemindBeforeDueAgentTest {
         Map<Integer, Reminder> data = new HashMap<>();
 
         // Mock to return the notif builder.
-        when(notifHelper.getBaseBuilder(eq(item.getContent()), anyString())).thenReturn(notifBuilder);
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
 
         // Mock the return of .build()
         Notification targetNotif = new Notification();
@@ -182,7 +193,7 @@ public class RemindBeforeDueAgentTest {
         when(item.getContent()).thenReturn("bar");
 
         // Mock to return the notif builder.
-        when(notifHelper.getBaseBuilder(eq(item.getContent()), anyString())).thenReturn(notifBuilder);
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
 
         // Mock the return of .build()
         Notification targetNotif = new Notification();
@@ -209,7 +220,7 @@ public class RemindBeforeDueAgentTest {
         when(item.getDueDate()).thenReturn(now.getTime() + intervalMax - 2);
 
         // Mock to return the notif builder.
-        when(notifHelper.getBaseBuilder(eq(item.getContent()), anyString())).thenReturn(notifBuilder);
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
 
         // Mock the return of .build()
         Notification targetNotif = new Notification();
@@ -234,7 +245,7 @@ public class RemindBeforeDueAgentTest {
         Map<Integer, Reminder> data = new HashMap<>();
 
         // Mock to return the notif builder.
-        when(notifHelper.getBaseBuilder(eq(item.getContent()), anyString())).thenReturn(notifBuilder);
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
 
         // Mock the return of .build()
         Notification targetNotif = new Notification();
@@ -252,7 +263,7 @@ public class RemindBeforeDueAgentTest {
     @Test
     public void createReminders_Normal_NotifyWithSound() throws Exception {
         setDefaultPrefs();
-        when(prefs.getProduceSoundBeforeDue()).thenReturn(true);
+        when(prefs.produceSound()).thenReturn(true);
         TodoistItem item = buildTodoistItem(now.getTime() + intervalMax);
 
         // Create an array with the mocked item
@@ -263,7 +274,7 @@ public class RemindBeforeDueAgentTest {
         Map<Integer, Reminder> data = new HashMap<>();
 
         // Mock to return the notif builder.
-        when(notifHelper.getBaseBuilder(eq(item.getContent()), anyString())).thenReturn(notifBuilder);
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
 
         // Mock the return of .build()
         Notification targetNotif = new Notification();
@@ -282,10 +293,71 @@ public class RemindBeforeDueAgentTest {
         verify(notifHelper).notify(item.getId(), targetNotif);
     }
 
+    @Test
+    public void createReminders_Normal_NotifHasTitleAndMsg() throws Exception {
+        setDefaultPrefs();
+        when(prefs.produceSound()).thenReturn(true);
+        TodoistItem item = buildTodoistItem(now.getTime() + intervalMax);
+
+        // Create an array with the mocked item
+        List<TodoistItem> items = new ArrayList<>();
+        items.add(item);
+
+        // Init empty data
+        Map<Integer, Reminder> data = new HashMap<>();
+
+        // Mock to return the notif builder.
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
+
+        // Mock the return of .build()
+        Notification targetNotif = new Notification();
+        when(notifBuilder.build()).thenReturn(targetNotif);
+
+        Uri uri = mock(Uri.class);
+        mockStatic(RingtoneManager.class);
+        when(RingtoneManager.getDefaultUri(any(int.class))).thenReturn(uri);
+
+        target.createReminders(data, items);
+
+        verify(notifBuilder).setContentTitle(item.getContent());
+        verify(notifBuilder).setContentText(matches(".*[Dd]ue.*"));
+    }
+
+    @Test
+    public void createReminders_TwiceNormal_NotifFirstOnly() throws Exception {
+        setDefaultPrefs();
+        TodoistItem item = buildTodoistItem(now.getTime() + intervalMax);
+
+        // Create an array with the mocked item
+        List<TodoistItem> items = new ArrayList<>();
+        items.add(item);
+
+        // Init empty data
+        Map<Integer, Reminder> data = new HashMap<>();
+
+        // Mock to return the notif builder.
+        when(notifHelper.getBaseBuilder()).thenReturn(notifBuilder);
+
+        // Mock the return of .build()
+        Notification targetNotif = new Notification();
+        when(notifBuilder.build()).thenReturn(targetNotif);
+
+        target.createReminders(data, items);
+
+        // Build the notif
+        verify(notifHelper).notify(item.getId(), targetNotif);
+
+        reset(notifHelper);
+        target.createReminders(data, items);
+
+        // Shouldn't notify since it's saved in the data
+        verifyNoMoreInteractions(notifHelper);
+    }
+
     private void setDefaultPrefs() {
-        when(prefs.getRemindBeforeDueMin()).thenReturn(intervalMin);
-        when(prefs.getRemindBeforeDueMax()).thenReturn(intervalMax);
-        when(prefs.getProduceSoundBeforeDue()).thenReturn(false);
+        when(prefs.getIntervalMin()).thenReturn(intervalMin);
+        when(prefs.getIntervalMax()).thenReturn(intervalMax);
+        when(prefs.produceSound()).thenReturn(false);
     }
 
     private TodoistItem buildTodoistItem(long due) {

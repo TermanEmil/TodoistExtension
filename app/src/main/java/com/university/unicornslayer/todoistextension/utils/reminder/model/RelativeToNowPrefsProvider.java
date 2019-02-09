@@ -1,6 +1,6 @@
 package com.university.unicornslayer.todoistextension.utils.reminder.model;
 
-public interface BeforeDuePrefsProvider {
+public interface RelativeToNowPrefsProvider {
     long getIntervalMin();
 
     long getIntervalMax();

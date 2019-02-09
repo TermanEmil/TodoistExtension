@@ -50,9 +50,9 @@ public class RemindBeforeDueAgent extends ContextWrapper {
             return;
 
         for (TodoistItem item : items) {
-            NotificationCompat.Builder builder = notifHelper.getBaseBuilder(
-                    item.getContent(),
-                    createTitle(item));
+            NotificationCompat.Builder builder = notifHelper.getBaseBuilder()
+                .setContentTitle(item.getContent())
+                .setContentText(createNotifMsg(item));
 
             if (sharedPrefsUtils.getProduceSoundBeforeDue())
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
@@ -62,7 +62,7 @@ public class RemindBeforeDueAgent extends ContextWrapper {
         }
     }
 
-    private String createTitle(TodoistItem item) {
+    private String createNotifMsg(TodoistItem item) {
         return String.format("Due to %s", shortTimeFormat.format(item.getDueDate()));
     }
 }

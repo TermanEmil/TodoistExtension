@@ -96,7 +96,9 @@ public class RemindAfterDueAgent extends ContextWrapper {
         String firstLine = decorateContent(itemsToShow.get(0), now);
         firstLine = Html.fromHtml(firstLine).toString();
 
-        NotificationCompat.Builder builder = notifHelper.getBaseBuilder(title, firstLine);
+        NotificationCompat.Builder builder = notifHelper.getBaseBuilder()
+            .setContentTitle(title)
+            .setContentText(firstLine);
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
         for (TodoistItem item : itemsToShow) {
