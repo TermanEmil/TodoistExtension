@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Default values-->
+    <bool name="default_before_due_make_sound">false</bool>
+    <bool name="default_at_due_make_sound">true</bool>
+    <bool name="default_do_remind_about_unfinished">true</bool>
+</resources>

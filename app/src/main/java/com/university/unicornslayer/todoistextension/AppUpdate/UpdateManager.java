@@ -2,62 +2,46 @@ package com.university.unicornslayer.todoistextension.AppUpdate;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.university.unicornslayer.todoistextension.BuildConfig;
-import com.university.unicornslayer.todoistextension.DataStuff.FileDataManager;
-import com.university.unicornslayer.todoistextension.DataStuff.IOnTaskDone;
-import com.university.unicornslayer.todoistextension.Permissions.PermissionHelper;
+import com.university.unicornslayer.todoistextension.utils.permissions.AppPermissionsHelper;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.Requests.BasicRequestTask;
 import com.university.unicornslayer.todoistextension.Requests.IObjectHandler;
 import com.university.unicornslayer.todoistextension.Requests.IRequestHandler;
 import com.university.unicornslayer.todoistextension.Requests.RequestResult;
 import com.university.unicornslayer.todoistextension.Requests.ResponseReaderTask;
-import com.university.unicornslayer.todoistextension.Utils.TodoistNotifHelper;
-
-import org.json.JSONObject;
+import com.university.unicornslayer.todoistextension.utils.permissions.PermissionsHelper;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Response;
-
-import static android.support.v4.app.ActivityCompat.requestPermissions;
 
 @SuppressLint("DefaultLocale")
 public class UpdateManager extends ContextWrapper {
     private static final Pattern versionNumberPattern =
         Pattern.compile("TermanEmil/TodoistExtension/releases/tag/v(\\d+).(\\d+)");
 
-    private final PermissionHelper permissionHelper;
+    private final AppPermissionsHelper permissionHelper;
 
     private ProgressDialog spinner;
     private BasicRequestTask getSiteTask1 = null;
@@ -66,7 +50,7 @@ public class UpdateManager extends ContextWrapper {
 
     private long downloadEnqueueNb;
 
-    public UpdateManager(Context context, PermissionHelper permissionHelper) {
+    public UpdateManager(Context context, AppPermissionsHelper permissionHelper) {
         super(context);
         this.permissionHelper = permissionHelper;
 
@@ -177,11 +161,9 @@ public class UpdateManager extends ContextWrapper {
     }
 
     private void onDownloadNewVersionClick(final Version version, final String downloadLink) {
-        permissionHelper.setWriteExternalStoragePermissionHandler(new IObjectHandler() {
+        permissionHelper.setHandler(new PermissionsHelper.OnGetPermissionDoneListener() {
             @Override
-            public void onDone(Object o) {
-                boolean granted = (Boolean) o;
-
+            public void onDone(boolean granted) {
                 if (granted) {
                     onDownloadNewVersionPermissionGranted(version, downloadLink);
                 }
@@ -194,10 +176,10 @@ public class UpdateManager extends ContextWrapper {
             }
         });
 
-        if (permissionHelper.hasWriteExternalStoragePermission())
-            permissionHelper.onGetWriteExternalStoragePermissionDone(true);
+        if (permissionHelper.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissionHelper.onGetPermissionDone(true);
         else
-            permissionHelper.requestWriteExternalStoragePermission();
+            permissionHelper.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     private void onDownloadNewVersionPermissionGranted(Version version, String downloadLink) {

@@ -2,10 +2,10 @@ package com.university.unicornslayer.todoistextension.ReminderManager;
 
 import android.annotation.SuppressLint;
 
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
-import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIsGood;
-import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.utils.ITodoistItemIsGood;
+import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
 
 import java.util.Calendar;
 import java.util.HashMap;

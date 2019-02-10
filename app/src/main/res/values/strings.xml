@@ -9,4 +9,98 @@
     <string name="update_regex_fail_errormsg">Internal parsing error. Failed to get the latest version from server</string>
     <string name="its_latest_version_msg">The latest version is currently installed</string>
     <string name="unable_to_open_file">Unable to open file</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Default values -->
+    <string name="default_mins_remind_before_due">20</string>
+    <string name="default_mins_remind_at_due">1</string>
+    <string name="default_mins_network_check">180</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_minutes_to_remind_before_due">Time to remind before due</string>
+    <string-array name="pref_before_due_list_titles">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>1h</item>
+        <item>2h</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_before_due_list_values">
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_minutes_to_remind_at_due">Time to remind at due</string>
+    <string-array name="pref_at_due_list_titles">
+        <item>0</item>
+        <item>1m</item>
+        <item>3m</item>
+        <item>5m</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_at_due_list_values">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>5</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_network_check_interval_title">How often should I check for new tasks</string>
+    <string-array name="pref_network_check_interval_list_titles">
+        <item>30m</item>
+        <item>1h</item>
+        <item>2h</item>
+        <item>3h</item>
+        <item>5h</item>
+        <item>12h</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_network_check_interval_list_values">
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>300</item>
+        <item>720</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_after_due_do_remind_title">Remind about unfinished tasks</string>
+
+    <!-- Settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_before_due_sound_notif_title">Produce a sound before due</string>
+    <string name="pref_at_due_sound_notif_title">Produce a sound at due</string>
+
+    <!-- Settings for Token -->
+    <string name="pref_header_token">Integration token</string>
+    <string name="pref_token_input_title">Change integration token</string>
+    <string name="error_token_cant_be_empty">Token can\'t be empty</string>
+    <string name="spinner_title_token_validation">Token validation</string>
+    <string name="spinner_msg_token_validation">Validating...</string>
+    <string name="error_token_is_invalid">Invalid token</string>
+    <string name="token_saved_msg">Token saved</string>
+    <string name="error_token_validation_failed">Token validation failed</string>
+    <string name="error_service_unavailable">Service unavailable</string>
+    <string name="error_failed_to_post_notifs">Failed to post notifications</string>
+    <string name="error_failed_to_get_items">Failed to get the items from the server</string>
+    <string name="prefs_at_due_interval_max_key">at-due-interval-max</string>
+    <string name="prefs_at_due_produce_sound_key">at-due-produce-sound</string>
+    <string name="prefs_before_due_interval_min_key">before-due-interval-min</string>
+    <string name="prefs_before_due_interval_max_key">before-due-interval-max</string>
+    <string name="prefs_before_due_produce_sound_key">before-due-produce-sound</string>
+    <string name="prefs_network_check_interval_key">network-check-interval</string>
+
 </resources>

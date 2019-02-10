@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.widget.Toast;
 
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
-import com.university.unicornslayer.todoistextension.Utils.RawItemsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.utils.RawItemsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,10 +23,10 @@ public class TodoistItemsRequestHelper extends ContextWrapper {
     private final ITodoistItemsHandler handler;
 
     public TodoistItemsRequestHelper(
-            Context context,
-            String token,
-            boolean toastErrors,
-            ITodoistItemsHandler handler
+        Context context,
+        String token,
+        boolean toastErrors,
+        ITodoistItemsHandler handler
     ) {
         super(context);
         this.token = token;

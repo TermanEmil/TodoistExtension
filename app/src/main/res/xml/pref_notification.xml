@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="@bool/default_before_due_make_sound"
+        android:title="@string/pref_before_due_sound_notif_title"
+        android:key="@string/prefs_before_due_produce_sound_key" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/default_at_due_make_sound"
+        android:title="@string/pref_at_due_sound_notif_title"
+        android:key="@string/prefs_at_due_produce_sound_key" />
+
+</PreferenceScreen>

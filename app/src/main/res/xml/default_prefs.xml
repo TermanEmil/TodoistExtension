@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--20 mins-->
+    <string name="remindBeforeDue">1200000</string>
+
+    <!--1 min-->
+    <string name="remindAtDue">60000</string>
+
+
+</resources>

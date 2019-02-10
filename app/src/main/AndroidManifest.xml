@@ -17,20 +17,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TokenInputActivity"></activity>
+        <activity android:name=".ui.token_input.TokenInputActivity" />
 
-        <receiver android:process=":remote" android:name=".Scheduling.ScheduleRepeatingReciver" />
-        <receiver android:process=":remote" android:name=".Scheduling.ScheduleExactReciver" />
-        <receiver android:name=".Scheduling.OnBootCompleted">
+        <receiver
+            android:name=".utils.alarms.recivers.ScheduleAlarmReceiver"
+            android:process=":remote" />
+        <receiver android:name=".utils.alarms.recivers.OnBootCompleted">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -41,8 +42,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

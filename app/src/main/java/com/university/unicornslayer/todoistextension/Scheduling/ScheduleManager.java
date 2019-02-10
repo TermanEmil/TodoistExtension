@@ -5,9 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.util.Log;
 
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.utils.alarms.recivers.ScheduleAlarmReceiver;
 
 import java.util.Calendar;
 
@@ -26,26 +26,26 @@ public class ScheduleManager extends ContextWrapper {
 
     public void setRepeatingAlarm()
     {
-        if (repeatingAlarmIsSet)
+        int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
+        if (repeatingAlarmIsSet || repeatingInterval < 0)
             return;
 
-        Intent intent = new Intent(this, ScheduleRepeatingReciver.class);
+        Intent intent = new Intent(this, ScheduleAlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(
             this,
             10,
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT);
 
-        int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + 2000,
+            System.currentTimeMillis(),
             repeatingInterval, pi);
         repeatingAlarmIsSet = true;
     }
 
     public void setExactAlarm(long localTargetTime) {
-        Intent intent = new Intent(this, ScheduleExactReciver.class);
+        Intent intent = new Intent(this, ScheduleAlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(
             this,
             1,

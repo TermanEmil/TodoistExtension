@@ -6,11 +6,11 @@ import android.content.ContextWrapper;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 
-import com.university.unicornslayer.todoistextension.DataStuff.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.DataStuff.TodoistItem;
-import com.university.unicornslayer.todoistextension.Utils.ITodoistItemIsGood;
-import com.university.unicornslayer.todoistextension.Utils.TodoistItemsUtils;
-import com.university.unicornslayer.todoistextension.Utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
+import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.utils.ITodoistItemIsGood;
+import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +32,7 @@ public class RemindBeforeDueAgent extends ContextWrapper {
 
     public void createReminders(final RemindersData remindersData, List<TodoistItem> items) {
         final long now = new Date().getTime();
-        final long milsMin = now + sharedPrefsUtils.getRemindAtDue();
+        final long milsMin = now + (sharedPrefsUtils.getRemindAtDue() < 0 ? 0 : sharedPrefsUtils.getRemindAtDue());
         final long milsMax = now + sharedPrefsUtils.getRemindBeforeDue();
 
         items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
@@ -40,7 +40,7 @@ public class RemindBeforeDueAgent extends ContextWrapper {
             public boolean isGood(TodoistItem item) {
                 return
                     item.getDueDate() >= milsMin &&
-                        item.getDueDate() <= milsMax &&
+                    item.getDueDate() <= milsMax &&
                    (!remindersData.beforeDueReminders.containsKey(item.getId()) ||
                     remindersData.beforeDueReminders.get(item.getId()).compareTo(item) != 0);
             }
@@ -50,9 +50,9 @@ public class RemindBeforeDueAgent extends ContextWrapper {
             return;
 
         for (TodoistItem item : items) {
-            NotificationCompat.Builder builder = notifHelper.getBaseBuilder(
-                    item.getContent(),
-                    createTitle(item));
+            NotificationCompat.Builder builder = notifHelper.getBaseBuilder()
+                .setContentTitle(item.getContent())
+                .setContentText(createNotifMsg(item));
 
             if (sharedPrefsUtils.getProduceSoundBeforeDue())
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
@@ -62,7 +62,7 @@ public class RemindBeforeDueAgent extends ContextWrapper {
         }
     }
 
-    private String createTitle(TodoistItem item) {
+    private String createNotifMsg(TodoistItem item) {
         return String.format("Due to %s", shortTimeFormat.format(item.getDueDate()));
     }
 }
