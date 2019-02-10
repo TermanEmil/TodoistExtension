@@ -1,7 +1,7 @@
 package com.university.unicornslayer.todoistextension.utils.reminder;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
-import com.university.unicornslayer.todoistextension.utils.reminder.agent.ReminderAgent;
+import com.university.unicornslayer.todoistextension.utils.reminder.agents.ReminderAgent;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 
 import java.io.IOException;

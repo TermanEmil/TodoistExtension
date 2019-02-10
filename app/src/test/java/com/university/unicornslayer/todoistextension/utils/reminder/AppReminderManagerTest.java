@@ -1,7 +1,7 @@
 package com.university.unicornslayer.todoistextension.utils.reminder;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
-import com.university.unicornslayer.todoistextension.utils.reminder.agent.ReminderAgent;
+import com.university.unicornslayer.todoistextension.utils.reminder.agents.ReminderAgent;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 
 import org.junit.Before;
@@ -16,8 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;

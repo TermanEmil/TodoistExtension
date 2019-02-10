@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.utils.reminder.agent;
+package com.university.unicornslayer.todoistextension.utils.reminder.agents;
 
 import android.app.Notification;
 import android.media.RingtoneManager;
@@ -365,9 +365,6 @@ public class ReminderRelativeToNowAgentTest {
         List<TodoistItem> items = new ArrayList<>();
         items.add(item);
 
-        // Init empty data
-        Map<Integer, Reminder> data = new HashMap<>();
-
         NextReminderModel result = target.getNextItemToRemind(items);
 
         assert result == null;
@@ -383,14 +380,11 @@ public class ReminderRelativeToNowAgentTest {
         List<TodoistItem> items = new ArrayList<>();
         items.add(item);
 
-        // Init empty data
-        Map<Integer, Reminder> data = new HashMap<>();
-
         NextReminderModel result = target.getNextItemToRemind(items);
 
         assert result != null;
         assert result.getItem() == item;
-        assert result.getWhen() == item.getDueDate() - now.getTime() - prefs.getIntervalMax();
+        assert result.getWhen() == item.getDueDate() - prefs.getIntervalMax();
     }
 
     @Test
@@ -412,7 +406,7 @@ public class ReminderRelativeToNowAgentTest {
 
         assert result != null;
         assert result.getItem() == item2;
-        assert result.getWhen() == item2.getDueDate() - now.getTime() - prefs.getIntervalMax();
+        assert result.getWhen() == item2.getDueDate() - prefs.getIntervalMax();
     }
 
     private void setDefaultPrefs() {

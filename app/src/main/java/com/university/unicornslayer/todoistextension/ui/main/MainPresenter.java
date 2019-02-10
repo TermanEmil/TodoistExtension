@@ -1,10 +1,15 @@
 package com.university.unicornslayer.todoistextension.ui.main;
 
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.AppSharedPrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 import com.university.unicornslayer.todoistextension.utils.alarms.ScheduleManager;
 import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
+import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -64,6 +69,13 @@ public class MainPresenter {
                 e.printStackTrace();
                 view.showFailedToPostNotifications();
             }
+
+            NextReminderModel nextToRemind = reminderManager.getNextItemToRemind(items);
+            if (nextToRemind == null) {
+                return;
+            }
+
+            scheduleManager.setExactAlarm(nextToRemind.getWhen());
         }
 
         @Override

@@ -21,9 +21,6 @@ import dagger.Module;
 @Module
 public interface AppBindingsModule {
     @Binds
-    ApiHelper bindApiHelper(AppApiHelper t);
-
-    @Binds
     FileIOHelper bindFileIOHelper(AppFileIOHelper t);
 
     @Binds

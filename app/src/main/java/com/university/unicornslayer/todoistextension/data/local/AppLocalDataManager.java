@@ -1,5 +1,7 @@
 package com.university.unicornslayer.todoistextension.data.local;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
@@ -19,7 +21,7 @@ public class AppLocalDataManager implements LocalDataManager {
     private final Gson gson;
     private String loadedDataStr = null;
 
-    private Map<String, Map<Integer, Reminder>> data;
+    private Map<String, Map<Integer, Reminder>> data = new HashMap<>();
 
     @Inject
     public AppLocalDataManager(
@@ -63,7 +65,7 @@ public class AppLocalDataManager implements LocalDataManager {
     @Override
     public Map<Integer, Reminder> getDataFromKey(String key) {
         if (!data.containsKey(key)) {
-            data.put(key, new HashMap<Integer, Reminder>());
+            data.put(key, new HashMap<>());
         }
 
         return data.get(key);

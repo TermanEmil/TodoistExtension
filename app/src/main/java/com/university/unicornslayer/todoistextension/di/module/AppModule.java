@@ -5,13 +5,17 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.university.unicornslayer.todoistextension.R;
+import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
+import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.AppSharedPrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.AtDuePrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.BeforeDuePrefs;
+import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.AppReminderManager;
 import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
-import com.university.unicornslayer.todoistextension.utils.reminder.agent.RemindBeforeDueAgent;
-import com.university.unicornslayer.todoistextension.utils.reminder.agent.RemindAtDueAgent;
+import com.university.unicornslayer.todoistextension.utils.reminder.agents.RemindBeforeDueAgent;
+import com.university.unicornslayer.todoistextension.utils.reminder.agents.RemindAtDueAgent;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -38,8 +42,18 @@ public class AppModule {
     }
 
     @Provides @Singleton
-    SharedPreferences provideSharedPrefs() {
-        return PreferenceManager.getDefaultSharedPreferences(provideContext());
+    SharedPreferences provideSharedPrefs(Context context) {
+//        return AppSharedPrefs.getSharedPrefs(context);
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    @Provides @Singleton
+    ApiHelper provideApiHelper(TokenPrefHelper tokenPrefHelper) {
+        ApiHelper result = new AppApiHelper();
+        if (tokenPrefHelper.getToken() != null)
+            result.setToken(tokenPrefHelper.getToken());
+
+        return result;
     }
 
     @Provides

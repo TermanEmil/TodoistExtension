@@ -4,7 +4,7 @@
         android:defaultValue="@string/default_mins_remind_before_due"
         android:entries="@array/pref_before_due_list_titles"
         android:entryValues="@array/pref_before_due_list_values"
-        android:key="remindBeforeDue"
+        android:key="@string/prefs_before_due_interval_max_key"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_minutes_to_remind_before_due" />
@@ -13,7 +13,7 @@
         android:defaultValue="@string/default_mins_remind_at_due"
         android:entries="@array/pref_at_due_list_titles"
         android:entryValues="@array/pref_at_due_list_values"
-        android:key="remindAtDue"
+        android:key="@string/prefs_at_due_interval_max_key"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_title_minutes_to_remind_at_due" />

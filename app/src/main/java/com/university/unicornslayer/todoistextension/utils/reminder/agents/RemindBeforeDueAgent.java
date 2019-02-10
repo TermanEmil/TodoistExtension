@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.utils.reminder.agent;
+package com.university.unicornslayer.todoistextension.utils.reminder.agents;
 
 import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;

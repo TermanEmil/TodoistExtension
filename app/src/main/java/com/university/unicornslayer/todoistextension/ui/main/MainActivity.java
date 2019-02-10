@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.university.unicornslayer.todoistextension.R;
+import com.university.unicornslayer.todoistextension.data.prefs.AppSharedPrefs;
 import com.university.unicornslayer.todoistextension.ui.base.BaseActivity;
 import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
 import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputActivity;

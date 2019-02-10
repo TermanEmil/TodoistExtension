@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.utils.reminder.agent;
+package com.university.unicornslayer.todoistextension.utils.reminder.agents;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -18,8 +18,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import javax.inject.Inject;
 
 public abstract class ReminderRelativeToNowAgent implements ReminderAgent {
     @SuppressLint("SimpleDateFormat")
@@ -118,7 +116,7 @@ public abstract class ReminderRelativeToNowAgent implements ReminderAgent {
 
         return new NextReminderModel(
             targetItem,
-            targetItem.getDueDate() - now - prefs.getIntervalMax()
+            targetItem.getDueDate() - prefs.getIntervalMax()
         );
     }
 }

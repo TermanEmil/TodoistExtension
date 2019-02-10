@@ -14,6 +14,8 @@ import java.util.Calendar;
 import javax.inject.Inject;
 
 public class AppScheduleManager implements ScheduleManager {
+    private final static String TAG = "ScheduleManager";
+
     private final AlarmManager alarmManager;
     private final SharedPrefsUtils sharedPrefsUtils;
     private final Context context;
@@ -47,7 +49,7 @@ public class AppScheduleManager implements ScheduleManager {
             repeatingInterval, pi);
         repeatingAlarmIsSet = true;
 
-        Log.i("Broadcast sent", "------------------------------");
+        Log.i(TAG, String.format("Repeating broadcast set. Interval = %f", repeatingInterval / 1000.0));
     }
 
     @Override
@@ -61,6 +63,8 @@ public class AppScheduleManager implements ScheduleManager {
 
         long targetTime = localTargetTime + getLocalTimeDiff();
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, targetTime, pi);
+
+        Log.i(TAG, String.format("Exact alarm set for %d", localTargetTime));
     }
 
     private long getLocalTimeDiff() {

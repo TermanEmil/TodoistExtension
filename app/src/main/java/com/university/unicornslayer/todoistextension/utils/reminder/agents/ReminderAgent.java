@@ -1,6 +1,5 @@
-package com.university.unicornslayer.todoistextension.utils.reminder.agent;
+package com.university.unicornslayer.todoistextension.utils.reminder.agents;
 
-import com.university.unicornslayer.todoistextension.data.local.LocalDataManager;
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;

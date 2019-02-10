@@ -136,8 +136,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("remindBeforeDue"));
-            bindPreferenceSummaryToValue(findPreference("remindAtDue"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.prefs_before_due_interval_max_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.prefs_at_due_interval_max_key)));
 
             bindPreferenceSummaryToValue(findPreference("networkCheckInterval"));
             bindPreferenceSummaryToValue(findPreference("doRemindAboutUnfinishedTasks"));
@@ -162,8 +162,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            bindPreferenceSummaryToValue(findPreference("produceSoundBeforeDue"));
-            bindPreferenceSummaryToValue(findPreference("produceSoundAtDue"));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.prefs_before_due_produce_sound_key)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.prefs_at_due_produce_sound_key)));
         }
 
         @Override

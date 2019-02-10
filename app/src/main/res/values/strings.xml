@@ -96,5 +96,10 @@
     <string name="error_service_unavailable">Service unavailable</string>
     <string name="error_failed_to_post_notifs">Failed to post notifications</string>
     <string name="error_failed_to_get_items">Failed to get the items from the server</string>
+    <string name="prefs_at_due_interval_max_key">at-due-interval-max</string>
+    <string name="prefs_at_due_produce_sound_key">at-due-produce-sound</string>
+    <string name="prefs_before_due_interval_min_key">before-due-interval-min</string>
+    <string name="prefs_before_due_interval_max_key">before-due-interval-max</string>
+    <string name="prefs_before_due_produce_sound_key">before-due-produce-sound</string>
 
 </resources>
