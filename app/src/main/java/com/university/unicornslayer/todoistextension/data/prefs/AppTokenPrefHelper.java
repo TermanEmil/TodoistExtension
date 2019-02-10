@@ -2,11 +2,14 @@ package com.university.unicornslayer.todoistextension.data.prefs;
 
 import android.content.Context;
 
+import javax.inject.Inject;
+
 public class AppTokenPrefHelper implements TokenPrefHelper {
     private final String TOKEN_KEY = "token";
 
     private final Context context;
 
+    @Inject
     public AppTokenPrefHelper(Context context) {
         this.context = context;
     }

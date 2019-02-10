@@ -6,21 +6,23 @@ import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 
 import java.net.HttpURLConnection;
 
+import javax.inject.Inject;
+
 public class TokenInputPresenter {
-    private final TokenInputMvpView view;
+    private TokenInputMvpView view;
     private final TokenPrefHelper tokenPrefHelper;
     private final ApiHelper apiHelper;
 
     private String tokenBeingValidated;
 
-    public TokenInputPresenter(
-        TokenInputMvpView view,
-        TokenPrefHelper tokenPrefHelper,
-        ApiHelper apiHelper
-    ) {
-        this.view = view;
+    @Inject
+    public TokenInputPresenter(TokenPrefHelper tokenPrefHelper, ApiHelper apiHelper) {
         this.tokenPrefHelper = tokenPrefHelper;
         this.apiHelper = apiHelper;
+    }
+
+    public void setView(TokenInputMvpView view) {
+        this.view = view;
     }
 
     public void onCreate() {

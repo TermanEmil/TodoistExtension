@@ -1,5 +1,7 @@
 package com.university.unicornslayer.todoistextension.data.network;
 
+import android.util.Log;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -12,6 +14,8 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 
+import javax.inject.Inject;
+
 import okhttp3.Response;
 
 public class AppApiHelper implements ApiHelper {
@@ -22,6 +26,7 @@ public class AppApiHelper implements ApiHelper {
 
     private String token = null;
 
+    @Inject
     public AppApiHelper() {
     }
 
@@ -68,6 +73,11 @@ public class AppApiHelper implements ApiHelper {
 
     @Override
     public void getAllItems(final GetAllItemsListener listener) {
+        if (token == null) {
+            Log.e("AppApiHelper", "Token was not set");
+            return;
+        }
+
         AndroidNetworking
             .post(url)
             .addBodyParameter("token", token)

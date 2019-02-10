@@ -1,34 +1,39 @@
 package com.university.unicornslayer.todoistextension.ui.main;
 
-import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
+import com.university.unicornslayer.todoistextension.utils.alarms.ScheduleManager;
 import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainPresenter {
-    private final MainMvpView view;
+    private MainMvpView view;
     private final TokenPrefHelper tokenPrefHelper;
     private final ReminderManager reminderManager;
     private final ApiHelper apiHelper;
     private final ScheduleManager scheduleManager;
 
+    @Inject
     public MainPresenter(
-        MainMvpView view,
         TokenPrefHelper tokenPrefHelper,
         ReminderManager reminderManager,
         ApiHelper apiHelper,
         ScheduleManager scheduleManager
     ) {
-        this.view = view;
         this.tokenPrefHelper = tokenPrefHelper;
         this.reminderManager = reminderManager;
         this.apiHelper = apiHelper;
         this.scheduleManager = scheduleManager;
+    }
+
+    public void setView(MainMvpView view) {
+        this.view = view;
     }
 
     public void onCreate() {
@@ -41,6 +46,7 @@ public class MainPresenter {
     }
 
     public void onCheckRemindersBtnPressed() {
+        scheduleManager.setRepeatingAlarm();
         apiHelper.setToken(tokenPrefHelper.getToken());
         apiHelper.getAllItems(new GetAllItemsListener());
     }

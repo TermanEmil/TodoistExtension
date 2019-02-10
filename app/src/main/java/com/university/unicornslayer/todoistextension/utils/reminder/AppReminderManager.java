@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class AppReminderManager implements ReminderManager {
     private final LocalDataManager localDataManager;
     private List<ReminderAgent> reminderAgents = new ArrayList<>();
 
+    @Inject
     public AppReminderManager(LocalDataManager localDataManager) {
         this.localDataManager = localDataManager;
     }
@@ -36,6 +39,7 @@ public class AppReminderManager implements ReminderManager {
         localDataManager.saveData();
     }
 
+    @Override
     public NextReminderModel getNextItemToRemind(List<TodoistItem> items) {
         long now = Calendar.getInstance().getTimeInMillis();
         long targetDif = Long.MAX_VALUE;

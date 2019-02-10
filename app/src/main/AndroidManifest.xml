@@ -27,7 +27,7 @@
         <activity android:name=".ui.token_input.TokenInputActivity" />
 
         <receiver
-            android:name=".utils.alarms.recivers.ScheduleAlarmReciver"
+            android:name=".utils.alarms.recivers.ScheduleAlarmReceiver"
             android:process=":remote" />
         <receiver android:name=".utils.alarms.recivers.OnBootCompleted">
             <intent-filter>

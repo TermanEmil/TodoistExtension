@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 public abstract class ReminderRelativeToNowAgent implements ReminderAgent {
     @SuppressLint("SimpleDateFormat")
     protected static final SimpleDateFormat shortTimeFormat = new SimpleDateFormat("HH:mm");

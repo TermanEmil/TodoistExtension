@@ -5,6 +5,8 @@ import android.content.Context;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 
+import javax.inject.Inject;
+
 public class AtDuePrefs implements RelativeToNowPrefsProvider {
     private static final String MAX_KEY = "at-due-interval-max";
     private static final String SOUND_KEY = "at-due-produce-sound";
@@ -12,6 +14,7 @@ public class AtDuePrefs implements RelativeToNowPrefsProvider {
     private final Context context;
     private final PrefsUtils prefsUtils;
 
+    @Inject
     public AtDuePrefs(Context context) {
         this.context = context;
         this.prefsUtils = new PrefsUtils(context, AppSharedPrefs.getSharedPrefs(context));

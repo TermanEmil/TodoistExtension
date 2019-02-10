@@ -47,7 +47,8 @@ public class TokenInputPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        presenter = new TokenInputPresenter(view, tokenPrefHelper, apiHelper);
+        presenter = new TokenInputPresenter(tokenPrefHelper, apiHelper);
+        presenter.setView(view);
     }
 
     @After

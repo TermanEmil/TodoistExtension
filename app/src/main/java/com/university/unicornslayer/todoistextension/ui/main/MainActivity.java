@@ -4,27 +4,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.university.unicornslayer.todoistextension.R;
-import com.university.unicornslayer.todoistextension.Scheduling.ScheduleManager;
-import com.university.unicornslayer.todoistextension.data.local.AppLocalDataManager;
-import com.university.unicornslayer.todoistextension.data.local.LocalDataManager;
-import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
-import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
-import com.university.unicornslayer.todoistextension.data.prefs.AppTokenPrefHelper;
-import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
+import com.university.unicornslayer.todoistextension.ui.base.BaseActivity;
 import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
 import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputActivity;
-import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
-import com.university.unicornslayer.todoistextension.utils.files.AppFileIOHelper;
-import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
-import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
-import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManagerBuilder;
 
-public class MainActivity extends AppCompatActivity implements MainMvpView {
+public class MainActivity extends BaseActivity implements MainMvpView {
     private static final int writeToExternalStorageRequestCode = 112;
 
     private MainPresenter presenter;
@@ -34,21 +22,8 @@ public class MainActivity extends AppCompatActivity implements MainMvpView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TokenPrefHelper tokenPrefHelper = new AppTokenPrefHelper(getApplicationContext());
-        FileIOHelper fileIOHelper = new AppFileIOHelper(getApplicationContext());
-        LocalDataManager localDataManager = new AppLocalDataManager(
-            getString(R.string.reminders_data_filename),
-            fileIOHelper);
-
-        TodoistNotifHelper notifHelper = new TodoistNotifHelper(getApplicationContext());
-
-        ReminderManager reminderManager = ReminderManagerBuilder.buildDefault(
-            getApplicationContext(), notifHelper, localDataManager);
-
-        ApiHelper apiHelper = new AppApiHelper();
-        ScheduleManager scheduleManager = new ScheduleManager(this);
-
-        presenter = new MainPresenter(this, tokenPrefHelper, reminderManager, apiHelper, scheduleManager);
+        presenter = getDagger().getMainPresenter();
+        presenter.setView(this);
         presenter.onCreate();
     }
 

@@ -7,7 +7,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 
 import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
-import com.university.unicornslayer.todoistextension.utils.alarms.recivers.ScheduleAlarmReciver;
+import com.university.unicornslayer.todoistextension.utils.alarms.recivers.ScheduleAlarmReceiver;
 
 import java.util.Calendar;
 
@@ -30,7 +30,7 @@ public class ScheduleManager extends ContextWrapper {
         if (repeatingAlarmIsSet || repeatingInterval < 0)
             return;
 
-        Intent intent = new Intent(this, ScheduleAlarmReciver.class);
+        Intent intent = new Intent(this, ScheduleAlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(
             this,
             10,
@@ -45,7 +45,7 @@ public class ScheduleManager extends ContextWrapper {
     }
 
     public void setExactAlarm(long localTargetTime) {
-        Intent intent = new Intent(this, ScheduleAlarmReciver.class);
+        Intent intent = new Intent(this, ScheduleAlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(
             this,
             1,

@@ -14,8 +14,9 @@ import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
 import com.university.unicornslayer.todoistextension.data.prefs.AppPrefHelper;
+import com.university.unicornslayer.todoistextension.ui.base.BaseActivity;
 
-public class TokenInputActivity extends AppCompatActivity implements TokenInputMvpView {
+public class TokenInputActivity extends BaseActivity implements TokenInputMvpView {
     private EditText tokenInput;
     private Button tokenSubmitBtn;
 
@@ -30,10 +31,8 @@ public class TokenInputActivity extends AppCompatActivity implements TokenInputM
         tokenInput = findViewById(R.id.tokenInputEditText);
         tokenSubmitBtn = findViewById(R.id.token_submit_btn);
 
-        presenter = new TokenInputPresenter(
-            this,
-            AppPrefHelper.getInstance(getApplicationContext()),
-            new AppApiHelper());
+        presenter = getDagger().getTokenInputPresenter();
+        presenter.setView(this);
         presenter.onCreate();
     }
 

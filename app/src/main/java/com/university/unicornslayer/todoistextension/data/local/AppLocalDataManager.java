@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 public class AppLocalDataManager implements LocalDataManager {
     private final String fileName;
     private final FileIOHelper fileIOHelper;
@@ -18,7 +21,11 @@ public class AppLocalDataManager implements LocalDataManager {
 
     private Map<String, Map<Integer, Reminder>> data;
 
-    public AppLocalDataManager(String fileName, FileIOHelper fileIOHelper) {
+    @Inject
+    public AppLocalDataManager(
+        @Named("localDataManagerFileName") String fileName,
+        FileIOHelper fileIOHelper
+    ) {
         this.fileName = fileName;
         this.fileIOHelper = fileIOHelper;
         this.gson = new Gson();

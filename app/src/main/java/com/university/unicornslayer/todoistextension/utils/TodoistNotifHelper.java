@@ -11,12 +11,15 @@ import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.R;
 
+import javax.inject.Inject;
+
 public class TodoistNotifHelper extends ContextWrapper {
     private static final String notifChannelId = "I'm not sure wtf is this, but ok";
     private static boolean channelIsCreated = false;
 
     private final NotificationManager notificationManager;
 
+    @Inject
     public TodoistNotifHelper(Context context) {
         super(context);
 

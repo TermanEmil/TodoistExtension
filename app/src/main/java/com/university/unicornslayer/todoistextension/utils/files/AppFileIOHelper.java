@@ -9,9 +9,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.inject.Inject;
+
 public class AppFileIOHelper implements FileIOHelper {
     private final Context context;
 
+    @Inject
     public AppFileIOHelper(Context context) {
         this.context = context;
     }
