@@ -4,8 +4,10 @@ import com.university.unicornslayer.todoistextension.data.local.AppLocalDataMana
 import com.university.unicornslayer.todoistextension.data.local.LocalDataManager;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
 import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
+import com.university.unicornslayer.todoistextension.data.prefs.AppNetworkUpdatePrefsProvider;
 import com.university.unicornslayer.todoistextension.data.prefs.AppTokenPrefHelper;
 import com.university.unicornslayer.todoistextension.data.prefs.BeforeDuePrefs;
+import com.university.unicornslayer.todoistextension.data.prefs.NetworkUpdatePrefsProvider;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 import com.university.unicornslayer.todoistextension.ui.main.MainActivity;
 import com.university.unicornslayer.todoistextension.ui.main.MainMvpView;
@@ -31,4 +33,7 @@ public interface AppBindingsModule {
 
     @Binds
     ScheduleManager bindScheduleManager(AppScheduleManager t);
+
+    @Binds
+    NetworkUpdatePrefsProvider bindNetworkUpdatePrefsProvider(AppNetworkUpdatePrefsProvider t);
 }

@@ -101,5 +101,6 @@
     <string name="prefs_before_due_interval_min_key">before-due-interval-min</string>
     <string name="prefs_before_due_interval_max_key">before-due-interval-max</string>
     <string name="prefs_before_due_produce_sound_key">before-due-produce-sound</string>
+    <string name="prefs_network_check_interval_key">network-check-interval</string>
 
 </resources>

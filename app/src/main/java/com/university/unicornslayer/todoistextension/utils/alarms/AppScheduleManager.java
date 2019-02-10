@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.university.unicornslayer.todoistextension.data.prefs.NetworkUpdatePrefsProvider;
 import com.university.unicornslayer.todoistextension.utils.alarms.recivers.ScheduleAlarmReceiver;
-import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 
 import java.util.Calendar;
 
@@ -17,21 +17,25 @@ public class AppScheduleManager implements ScheduleManager {
     private final static String TAG = "ScheduleManager";
 
     private final AlarmManager alarmManager;
-    private final SharedPrefsUtils sharedPrefsUtils;
     private final Context context;
+    private final NetworkUpdatePrefsProvider networkUpdatePrefsProvider;
     private boolean repeatingAlarmIsSet;
 
     @Inject
-    public AppScheduleManager(Context context) {
-        this.alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        this.sharedPrefsUtils = new SharedPrefsUtils(context);
+    public AppScheduleManager(
+        Context context,
+        AlarmManager alarmManager,
+        NetworkUpdatePrefsProvider networkUpdatePrefsProvider
+    ) {
+        this.alarmManager = alarmManager;
         this.context = context;
+        this.networkUpdatePrefsProvider = networkUpdatePrefsProvider;
     }
 
     @Override
     public void setRepeatingAlarm()
     {
-        int repeatingInterval = sharedPrefsUtils.getNetworkCheckInterval();
+        int repeatingInterval = networkUpdatePrefsProvider.getNetworkCheckInterval();
         if (repeatingAlarmIsSet || repeatingInterval < 0)
             return;
 
@@ -42,7 +46,6 @@ public class AppScheduleManager implements ScheduleManager {
             intent,
             PendingIntent.FLAG_CANCEL_CURRENT);
 
-        alarmManager.cancel(pi);
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + 1000 * 5,

@@ -22,14 +22,14 @@
         android:defaultValue="@string/default_mins_network_check"
         android:entries="@array/pref_network_check_interval_list_titles"
         android:entryValues="@array/pref_network_check_interval_list_values"
-        android:key="networkCheckInterval"
+        android:key="@string/prefs_network_check_interval_key"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
         android:title="@string/pref_network_check_interval_title" />
 
-    <SwitchPreference
-        android:defaultValue="@bool/default_do_remind_about_unfinished"
-        android:title="@string/pref_after_due_do_remind_title"
-        android:key="doRemindAboutUnfinishedTasks" />
+    <!--<SwitchPreference-->
+        <!--android:defaultValue="@bool/default_do_remind_about_unfinished"-->
+        <!--android:title="@string/pref_after_due_do_remind_title"-->
+        <!--android:key="doRemindAboutUnfinishedTasks" />-->
 
 </PreferenceScreen>

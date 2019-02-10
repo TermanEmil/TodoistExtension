@@ -1,5 +1,6 @@
 package com.university.unicornslayer.todoistextension.di.module;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -43,8 +44,12 @@ public class AppModule {
 
     @Provides @Singleton
     SharedPreferences provideSharedPrefs(Context context) {
-//        return AppSharedPrefs.getSharedPrefs(context);
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    @Provides @Singleton
+    AlarmManager provideAlarmManager(Context context) {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
     @Provides @Singleton
