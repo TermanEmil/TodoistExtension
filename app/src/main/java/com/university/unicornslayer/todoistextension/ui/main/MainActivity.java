@@ -103,7 +103,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
         if (requestCode == getResources().getInteger(R.integer.writeExternlPermissionRequestNb)) {
             boolean granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//            permissionHelper.onGetWriteExternalStoragePermissionDone(granted);
+//            permissionHelper.onGetPermissionDone(granted);
         }
     }
 

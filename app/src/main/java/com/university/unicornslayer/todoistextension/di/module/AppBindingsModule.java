@@ -15,6 +15,8 @@ import com.university.unicornslayer.todoistextension.utils.alarms.AppScheduleMan
 import com.university.unicornslayer.todoistextension.utils.alarms.ScheduleManager;
 import com.university.unicornslayer.todoistextension.utils.files.AppFileIOHelper;
 import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
+import com.university.unicornslayer.todoistextension.utils.permissions.AppPermissionsHelper;
+import com.university.unicornslayer.todoistextension.utils.permissions.PermissionsHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 
 import dagger.Binds;
@@ -36,4 +38,7 @@ public interface AppBindingsModule {
 
     @Binds
     NetworkUpdatePrefsProvider bindNetworkUpdatePrefsProvider(AppNetworkUpdatePrefsProvider t);
+
+    @Binds
+    PermissionsHelper bindPermissionsHelper(AppPermissionsHelper t);
 }

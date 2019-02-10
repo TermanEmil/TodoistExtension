@@ -1,5 +1,6 @@
 package com.university.unicornslayer.todoistextension.di.module;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,14 +28,25 @@ import dagger.Provides;
 @Module(includes = AppBindingsModule.class)
 public class AppModule {
     private final Context context;
+    private final Activity activity;
+
+    public AppModule(Context context, Activity activity) {
+        this.context = context;
+        this.activity = activity;
+    }
 
     public AppModule(Context context) {
-        this.context = context;
+        this(context, null);
     }
 
     @Provides
     Context provideContext() {
         return context;
+    }
+
+    @Provides
+    Activity provideActivity() {
+        return activity;
     }
 
     @Provides @Named("localDataManagerFileName")

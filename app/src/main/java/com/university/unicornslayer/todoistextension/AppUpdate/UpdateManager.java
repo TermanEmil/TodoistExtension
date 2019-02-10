@@ -1,5 +1,6 @@
 package com.university.unicornslayer.todoistextension.AppUpdate;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -19,13 +20,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.university.unicornslayer.todoistextension.BuildConfig;
-import com.university.unicornslayer.todoistextension.Permissions.PermissionHelper;
+import com.university.unicornslayer.todoistextension.utils.permissions.AppPermissionsHelper;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.Requests.BasicRequestTask;
 import com.university.unicornslayer.todoistextension.Requests.IObjectHandler;
 import com.university.unicornslayer.todoistextension.Requests.IRequestHandler;
 import com.university.unicornslayer.todoistextension.Requests.RequestResult;
 import com.university.unicornslayer.todoistextension.Requests.ResponseReaderTask;
+import com.university.unicornslayer.todoistextension.utils.permissions.PermissionsHelper;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -39,7 +41,7 @@ public class UpdateManager extends ContextWrapper {
     private static final Pattern versionNumberPattern =
         Pattern.compile("TermanEmil/TodoistExtension/releases/tag/v(\\d+).(\\d+)");
 
-    private final PermissionHelper permissionHelper;
+    private final AppPermissionsHelper permissionHelper;
 
     private ProgressDialog spinner;
     private BasicRequestTask getSiteTask1 = null;
@@ -48,7 +50,7 @@ public class UpdateManager extends ContextWrapper {
 
     private long downloadEnqueueNb;
 
-    public UpdateManager(Context context, PermissionHelper permissionHelper) {
+    public UpdateManager(Context context, AppPermissionsHelper permissionHelper) {
         super(context);
         this.permissionHelper = permissionHelper;
 
@@ -159,11 +161,9 @@ public class UpdateManager extends ContextWrapper {
     }
 
     private void onDownloadNewVersionClick(final Version version, final String downloadLink) {
-        permissionHelper.setWriteExternalStoragePermissionHandler(new IObjectHandler() {
+        permissionHelper.setHandler(new PermissionsHelper.OnGetPermissionDoneListener() {
             @Override
-            public void onDone(Object o) {
-                boolean granted = (Boolean) o;
-
+            public void onDone(boolean granted) {
                 if (granted) {
                     onDownloadNewVersionPermissionGranted(version, downloadLink);
                 }
@@ -176,10 +176,10 @@ public class UpdateManager extends ContextWrapper {
             }
         });
 
-        if (permissionHelper.hasWriteExternalStoragePermission())
-            permissionHelper.onGetWriteExternalStoragePermissionDone(true);
+        if (permissionHelper.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            permissionHelper.onGetPermissionDone(true);
         else
-            permissionHelper.requestWriteExternalStoragePermission();
+            permissionHelper.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     private void onDownloadNewVersionPermissionGranted(Version version, String downloadLink) {
