@@ -5,6 +5,7 @@ import com.university.unicornslayer.todoistextension.ui.main.MainActivity;
 import com.university.unicornslayer.todoistextension.ui.main.MainMvpView;
 import com.university.unicornslayer.todoistextension.ui.main.MainPresenter;
 import com.university.unicornslayer.todoistextension.ui.settings.SettingsActivity;
+import com.university.unicornslayer.todoistextension.ui.settings.fragments.BaseSettingsFragment;
 import com.university.unicornslayer.todoistextension.ui.token_input.TokenInputPresenter;
 import com.university.unicornslayer.todoistextension.utils.alarms.recivers.OnBootCompleted;
 import com.university.unicornslayer.todoistextension.utils.alarms.recivers.ScheduleAlarmReceiver;
@@ -30,4 +31,5 @@ public interface AppComponent {
     void inject(ScheduleAlarmReceiver t);
     void inject(OnBootCompleted t);
     void inject(SettingsActivity t);
+    void inject(BaseSettingsFragment t);
 }
