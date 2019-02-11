@@ -2,11 +2,23 @@ package com.university.unicornslayer.todoistextension.utils;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class TodoistItemsUtils {
+    public static List<TodoistItem> extractItems(JSONArray jsonArray) throws JSONException {
+        List<TodoistItem> result = new ArrayList<>(jsonArray.length());
+
+        for (int i = 0; i < jsonArray.length(); i++)
+            result.add(new TodoistItem(jsonArray.getJSONObject(i)));
+
+        return result;
+    }
+
     public static List<TodoistItem> filter(List<TodoistItem> items, ITodoistItemIsGood condition) {
         List<TodoistItem> result = new ArrayList<>();
         for (TodoistItem item : items) {
@@ -24,27 +36,5 @@ public class TodoistItemsUtils {
                 return item.getDueDate() != -1;
             }
         });
-    }
-
-    public static TodoistItem getNextClosestItem(List<TodoistItem> items) {
-        TodoistItem closestItem = null;
-        long now = Calendar.getInstance().getTimeInMillis();
-
-        for (TodoistItem item : items) {
-            long itemDue = item.getDueDate();
-            if (itemDue >= now && (closestItem == null || itemDue < closestItem.getDueDate()))
-                closestItem = item;
-        }
-
-        return closestItem;
-    }
-
-    public static boolean listContainsIf(List<TodoistItem> items, ITodoistItemIsGood condition) {
-        for (TodoistItem item : items) {
-            if (condition.isGood(item))
-                return true;
-        }
-
-        return false;
     }
 }

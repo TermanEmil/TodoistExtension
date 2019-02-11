@@ -143,7 +143,6 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
         downloadEnqueueNb = downloadManager.enqueue(request);
     }
 
-    // TODO: What happens if the activity is left? Mb nullify smth on finish
     private void onDownloadBroadcastReceived(Context context) {
         if (view == null) {
             // It was cancelled.
