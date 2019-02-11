@@ -3,6 +3,7 @@ package com.university.unicornslayer.todoistextension.ui.token_input;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,15 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
         presenter.setView(this);
         presenter.onCreate();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupActionBar();
+    }
+
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // Show the Up button in the action bar.
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
