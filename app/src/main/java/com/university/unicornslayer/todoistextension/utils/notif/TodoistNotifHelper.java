@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.utils;
+package com.university.unicornslayer.todoistextension.utils.notif;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

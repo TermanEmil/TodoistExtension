@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
-import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.notif.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;

@@ -141,7 +141,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.prefs_at_due_interval_max_key)));
 
             bindPreferenceSummaryToValue(findPreference(getString(R.string.prefs_network_check_interval_key)));
-//            bindPreferenceSummaryToValue(findPreference("doRemindAboutUnfinishedTasks"));
         }
 
         @Override

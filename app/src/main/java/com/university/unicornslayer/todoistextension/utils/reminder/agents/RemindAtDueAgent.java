@@ -1,7 +1,7 @@
 package com.university.unicornslayer.todoistextension.utils.reminder.agents;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
-import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.notif.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 
 import javax.inject.Inject;

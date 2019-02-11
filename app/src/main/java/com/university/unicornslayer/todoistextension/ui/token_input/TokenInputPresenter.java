@@ -1,6 +1,5 @@
 package com.university.unicornslayer.todoistextension.ui.token_input;
 
-import com.university.unicornslayer.todoistextension.data.SharedPrefsUtils;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
 

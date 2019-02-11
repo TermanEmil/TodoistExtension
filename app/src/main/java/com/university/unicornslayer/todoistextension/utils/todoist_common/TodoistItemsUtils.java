@@ -1,4 +1,4 @@
-package com.university.unicornslayer.todoistextension.utils;
+package com.university.unicornslayer.todoistextension.utils.todoist_common;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
 
@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class TodoistItemsUtils {

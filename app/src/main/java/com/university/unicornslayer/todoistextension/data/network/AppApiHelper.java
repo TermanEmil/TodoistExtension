@@ -6,7 +6,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseListener;
-import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.todoist_common.TodoistItemsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;

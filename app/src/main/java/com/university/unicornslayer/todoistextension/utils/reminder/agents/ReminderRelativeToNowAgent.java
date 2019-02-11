@@ -6,9 +6,9 @@ import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
-import com.university.unicornslayer.todoistextension.utils.ITodoistItemIsGood;
-import com.university.unicornslayer.todoistextension.utils.TodoistItemsUtils;
-import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.todoist_common.ITodoistItemIsGood;
+import com.university.unicornslayer.todoistextension.utils.todoist_common.TodoistItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.notif.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
