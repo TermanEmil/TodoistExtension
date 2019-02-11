@@ -51,6 +51,14 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
         appUpdater.onDestroy();
     }
 
+    public void onCheckForUpdates(View view) {
+        appUpdater.checkForUpdates();
+    }
+
+    public void onClickSettings(View view) {
+        presenter.onClickSettings();
+    }
+
     @Override
     public void gotoInputTokenView() {
         Intent intent = new Intent(this, TokenInputActivity.class);
@@ -164,7 +172,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
     @Override
     public void gotoSettingsView() {
         Intent intent = new Intent(this, SettingsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
@@ -222,15 +229,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
         }
     }
 
-    public void onCheckForUpdates(View view) {
-        appUpdater.checkForUpdates();
-    }
-
-    public void onClickSettings(View view) {
-        presenter.onClickSettings();
-    }
-
-    public void requestPermission(String permission, int requestNb) {
+    private void requestPermission(String permission, int requestNb) {
         String[] permissions = { permission };
         ActivityCompat.requestPermissions(this, permissions, requestNb);
     }

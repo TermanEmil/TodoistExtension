@@ -13,8 +13,9 @@
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="com.university.unicornslayer.todoistextension.ui.settings.fragments.TokenPreferenceFragment"
         android:icon="@drawable/ic_baseline_swap_vert"
-        android:title="@string/pref_header_token" />
+        android:title="@string/pref_header_token">
+        <intent android:action=".ui.token_input.TokenInputActivity" />
+    </header>
 
 </preference-headers>

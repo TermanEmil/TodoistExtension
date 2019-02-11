@@ -16,7 +16,6 @@ import android.preference.PreferenceManager;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.ui.settings.fragments.GeneralPreferenceFragment;
 import com.university.unicornslayer.todoistextension.ui.settings.fragments.NotificationPreferenceFragment;
-import com.university.unicornslayer.todoistextension.ui.settings.fragments.TokenPreferenceFragment;
 
 import java.util.List;
 
@@ -119,7 +118,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
             || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-            || NotificationPreferenceFragment.class.getName().equals(fragmentName)
-            || TokenPreferenceFragment.class.getName().equals(fragmentName);
+            || NotificationPreferenceFragment.class.getName().equals(fragmentName);
     }
 }

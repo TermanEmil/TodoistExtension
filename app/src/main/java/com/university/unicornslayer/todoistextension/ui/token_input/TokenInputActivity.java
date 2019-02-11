@@ -3,6 +3,7 @@ package com.university.unicornslayer.todoistextension.ui.token_input;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,19 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
         presenter = getDagger().getTokenInputPresenter();
         presenter.setView(this);
         presenter.onCreate();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void submitToken(View view) {
