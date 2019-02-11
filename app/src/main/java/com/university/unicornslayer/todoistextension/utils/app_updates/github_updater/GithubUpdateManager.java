@@ -301,6 +301,7 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
             if (!DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction()))
                 return;
 
+            unregisterReceiver(this);
             onDownloadBroadcastReceived(context);
         }
     }
