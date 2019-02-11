@@ -87,6 +87,7 @@
     <!-- Settings for Token -->
     <string name="pref_header_token">Integration token</string>
     <string name="pref_token_input_title">Change integration token</string>
+
     <string name="error_token_cant_be_empty">Token can\'t be empty</string>
     <string name="spinner_title_token_validation">Token validation</string>
     <string name="spinner_msg_token_validation">Validating...</string>
