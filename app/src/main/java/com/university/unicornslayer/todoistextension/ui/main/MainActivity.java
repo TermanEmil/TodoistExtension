@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
     protected void onResume() {
         super.onResume();
         presenter.onResume();
+        enableInput();
     }
 
     @Override
@@ -97,8 +98,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
 
     @Override
     public void dismissDownloading() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        dismissProgressDialog();
     }
 
     @Override
@@ -116,8 +116,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
 
     @Override
     public void dismissCheckingForUpdates() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        dismissProgressDialog();
     }
 
     @Override
@@ -175,35 +174,21 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
         startActivity(intent);
     }
 
-    public void onCheckRemindersBtnPressed(View view) {
-        presenter.onCheckRemindersBtnPressed();
+    @Override
+    public void showCheckingReminders() {
+        showProgressDialog(
+            getString(R.string.title_progress_dialog_checking_reminders),
+            getString(R.string.msg_progress_dialog_please_wait),
+            null);
     }
 
-    private void displayTheNextItem() {
-//        if (shortInfoView == null)
-//            shortInfoView = findViewById(R.id.shortInfo);
-//
-//        String fileContent = fileDataManager.readFromFile(getString(R.string.next_closest_item));
-//        if (fileContent == null) {
-//            shortInfoView.setText(getString(R.string.msg_when_no_tasks_in_future));
-//            return;
-//        } else {
-//            TodoistItem item = gson.fromJson(fileContent, TodoistItem.class);
-//            if (item == null || !item.dueIsInFuture()) {
-//                shortInfoView.setText(getString(R.string.msg_when_no_tasks_in_future));
-//                return;
-//            }
-//
-//            CharSequence relativeTime = DateUtils.getRelativeTimeSpanString(
-//                item.getDueDate(),
-//                Calendar.getInstance().getTimeInMillis(),
-//                0L,
-//                DateUtils.FORMAT_ABBREV_ALL);
-//
-//            String itemContent = item.getTrimmedContent(sharedPrefsUtils.getMaxContentSizeForShortDisplay());
-//            String text = String.format("<b>%s</b> <i>%s</i>", Html.escapeHtml(itemContent), relativeTime);
-//            shortInfoView.setText(Html.fromHtml(text));
-//        }
+    @Override
+    public void hideCheckingReminders() {
+        dismissProgressDialog();
+    }
+
+    public void onCheckRemindersBtnPressed(View view) {
+        presenter.onCheckRemindersBtnPressed();
     }
 
     @Override

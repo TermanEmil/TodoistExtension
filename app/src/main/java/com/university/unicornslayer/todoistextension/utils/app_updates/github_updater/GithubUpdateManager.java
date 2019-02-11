@@ -42,6 +42,8 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
     private long downloadEnqueueNb;
     private AppUpdatesView view;
 
+    private BroadcastReceiver onCompleteReciver;
+
     @Inject
     public GithubUpdateManager(Context context, DownloadManager downloadManager) {
         super(context);
@@ -67,6 +69,14 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
     @Override
     public void onDestroy() {
         view = null;
+
+        if (onCompleteReciver != null) {
+            try {
+                unregisterReceiver(onCompleteReciver);
+            } catch (Exception e) {
+                // Ignore
+            }
+        }
     }
 
     @Override
@@ -138,8 +148,8 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
         request.allowScanningByMediaScanner();
 
-        BroadcastReceiver onComplete = new DownloadFinishedBroadcast();
-        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        onCompleteReciver = new DownloadFinishedBroadcast();
+        registerReceiver(onCompleteReciver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         downloadEnqueueNb = downloadManager.enqueue(request);
     }
 
@@ -226,6 +236,9 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
     private class CheckForUpdatesListener implements OkHttpResponseListener {
         @Override
         public void onResponse(Response response) {
+            if (view == null)
+                return;
+
             view.dismissCheckingForUpdates();
 
             if (response.code() != HttpURLConnection.HTTP_OK)
@@ -236,6 +249,9 @@ public class GithubUpdateManager extends ContextWrapper implements AppUpdater {
 
         @Override
         public void onError(ANError anError) {
+            if (view == null)
+                return;
+
             view.dismissCheckingForUpdates();
             view.enableInput();
             onError(anError.getErrorCode());

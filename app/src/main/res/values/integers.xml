@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="versionPart1">1</integer>
-    <integer name="versionPart2">3</integer>
+    <integer name="versionPart2">4</integer>
     <integer name="writeExternlPermissionRequestNb">42</integer>
 </resources>
