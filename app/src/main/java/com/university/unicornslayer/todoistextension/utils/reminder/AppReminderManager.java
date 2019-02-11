@@ -2,6 +2,7 @@ package com.university.unicornslayer.todoistextension.utils.reminder;
 
 import com.university.unicornslayer.todoistextension.data.local.LocalDataManager;
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
+import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
 import com.university.unicornslayer.todoistextension.utils.todoist_common.TodoistItemsUtils;
 import com.university.unicornslayer.todoistextension.utils.reminder.agents.ReminderAgent;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
@@ -10,16 +11,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 public class AppReminderManager implements ReminderManager {
-    private final LocalDataManager localDataManager;
+    private final LocalDataManager dataManager;
     private List<ReminderAgent> reminderAgents = new ArrayList<>();
 
     @Inject
     public AppReminderManager(LocalDataManager localDataManager) {
-        this.localDataManager = localDataManager;
+        this.dataManager = localDataManager;
     }
 
     @Override
@@ -31,12 +33,14 @@ public class AppReminderManager implements ReminderManager {
     public void checkNotifications(List<TodoistItem> items) throws IOException {
         items = TodoistItemsUtils.extractWithDueDate(items);
 
-        localDataManager.loadData();
+        dataManager.loadData();
         for (ReminderAgent reminderAgent : reminderAgents) {
-            reminderAgent.createReminders(
-                localDataManager.getDataFromKey(reminderAgent.getResourceKey()), items);
+            Map<Integer, Reminder> reminderData = dataManager.getDataFromKey(reminderAgent.getResourceKey());
+
+            reminderAgent.createReminders(reminderData, items);
+            reminderAgent.removeOldData(reminderData, items);
         }
-        localDataManager.saveData();
+        dataManager.saveData();
     }
 
     @Override

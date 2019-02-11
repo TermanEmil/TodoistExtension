@@ -15,6 +15,7 @@ import com.university.unicornslayer.todoistextension.utils.reminder.model.Remind
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,16 +43,13 @@ public abstract class ReminderRelativeToNowAgent implements ReminderAgent {
         final long now = Calendar.getInstance().getTimeInMillis();
         final long milsMin = now + prefs.getIntervalMin();
         final long milsMax = now + prefs.getIntervalMax();
-        items = TodoistItemsUtils.filter(items, new ITodoistItemIsGood() {
-            @Override
-            public boolean isGood(TodoistItem item) {
-                return
-                    item.getDueDate() >= milsMin &&
-                    item.getDueDate() <= milsMax &&
-                    (!data.containsKey(item.getId()) ||
-                    Objects.requireNonNull(data.get(item.getId())).compareTo(item) != 0);
-            }
-        });
+        items = TodoistItemsUtils.filter(items, item ->
+            item.getDueDate() >= milsMin &&
+            item.getDueDate() <= milsMax &&
+            (
+                !data.containsKey(item.getId()) ||
+                Objects.requireNonNull(data.get(item.getId())).compareTo(item) != 0
+            ));
 
         if (items.size() == 0)
             return;
@@ -118,5 +116,19 @@ public abstract class ReminderRelativeToNowAgent implements ReminderAgent {
             targetItem,
             targetItem.getDueDate() - prefs.getIntervalMax()
         );
+    }
+
+    @Override
+    public void removeOldData(Map<Integer, Reminder> data, List<TodoistItem> items) {
+        long now = Calendar.getInstance().getTimeInMillis();
+
+        Iterator<Integer> it = data.keySet().iterator();
+        while (it.hasNext()) {
+            Integer key = it.next();
+            Reminder reminder = data.get(key);
+
+            if (reminder.dueDate < now + prefs.getIntervalMin())
+                it.remove();
+        }
     }
 }

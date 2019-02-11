@@ -13,4 +13,6 @@ public interface ReminderAgent {
     NextReminderModel getNextItemToRemind(List<TodoistItem> items);
 
     String getResourceKey();
+
+    void removeOldData(Map<Integer, Reminder> data, List<TodoistItem> items);
 }
