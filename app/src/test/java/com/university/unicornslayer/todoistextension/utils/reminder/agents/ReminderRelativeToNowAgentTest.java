@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.university.unicornslayer.todoistextension.data.model.TodoistItem;
-import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.notif.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.NextReminderModel;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.RelativeToNowPrefsProvider;
 import com.university.unicornslayer.todoistextension.utils.reminder.model.Reminder;
@@ -409,6 +409,23 @@ public class ReminderRelativeToNowAgentTest {
         assert result.getWhen() == item2.getDueDate() - prefs.getIntervalMax();
     }
 
+    @Test
+    public void removeOldData_OneOldOneNewItem_RemoveItLeaveIt() throws Exception {
+        setDefaultPrefs();
+
+        TodoistItem item1 = buildTodoistItem(now.getTime() + intervalMin - 1, 0);
+        TodoistItem item2 = buildTodoistItem(now.getTime() + intervalMin + 1, 1);
+
+        Map<Integer, Reminder> data = new HashMap<>();
+        data.put(item1.getId(), new Reminder(item1));
+        data.put(item2.getId(), new Reminder(item2));
+
+        target.removeOldData(data, null);
+
+        assert data.size() == 1;
+        assert data.containsKey(item2.getId());
+    }
+
     private void setDefaultPrefs() {
         when(prefs.getIntervalMin()).thenReturn(intervalMin);
         when(prefs.getIntervalMax()).thenReturn(intervalMax);
@@ -416,7 +433,11 @@ public class ReminderRelativeToNowAgentTest {
     }
 
     private TodoistItem buildTodoistItem(long due) {
-        return buildTodoistItem(due, defaultItemContent, 0);
+        return buildTodoistItem(due, 0);
+    }
+
+    private TodoistItem buildTodoistItem(long due, int id) {
+        return buildTodoistItem(due, defaultItemContent, id);
     }
 
     private TodoistItem buildTodoistItem(long due, String content, int id) {

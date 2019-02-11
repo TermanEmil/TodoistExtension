@@ -24,7 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.token_input.TokenInputActivity" />
+        <activity android:name=".ui.token_input.TokenInputActivity">
+            <intent-filter>
+                <action android:name=".ui.token_input.TokenInputActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name=".utils.alarms.recivers.ScheduleAlarmReceiver"

@@ -2,6 +2,7 @@ package com.university.unicornslayer.todoistextension.di.module;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -9,11 +10,10 @@ import android.preference.PreferenceManager;
 import com.university.unicornslayer.todoistextension.R;
 import com.university.unicornslayer.todoistextension.data.network.ApiHelper;
 import com.university.unicornslayer.todoistextension.data.network.AppApiHelper;
-import com.university.unicornslayer.todoistextension.data.prefs.AppSharedPrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.AtDuePrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.BeforeDuePrefs;
 import com.university.unicornslayer.todoistextension.data.prefs.TokenPrefHelper;
-import com.university.unicornslayer.todoistextension.utils.TodoistNotifHelper;
+import com.university.unicornslayer.todoistextension.utils.notif.TodoistNotifHelper;
 import com.university.unicornslayer.todoistextension.utils.reminder.AppReminderManager;
 import com.university.unicornslayer.todoistextension.utils.reminder.ReminderManager;
 import com.university.unicornslayer.todoistextension.utils.reminder.agents.RemindBeforeDueAgent;
@@ -39,12 +39,12 @@ public class AppModule {
         this(context, null);
     }
 
-    @Provides
+    @Provides @Singleton
     Context provideContext() {
         return context;
     }
 
-    @Provides
+    @Provides @Singleton
     Activity provideActivity() {
         return activity;
     }
@@ -65,6 +65,11 @@ public class AppModule {
     }
 
     @Provides @Singleton
+    DownloadManager provideDownloadManager(Context context) {
+        return (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+    }
+
+    @Provides @Singleton
     ApiHelper provideApiHelper(TokenPrefHelper tokenPrefHelper) {
         ApiHelper result = new AppApiHelper();
         if (tokenPrefHelper.getToken() != null)
@@ -73,17 +78,17 @@ public class AppModule {
         return result;
     }
 
-    @Provides
+    @Provides @Singleton
     RemindBeforeDueAgent provideRemindBeforeDueAgent(BeforeDuePrefs prefs, TodoistNotifHelper notifHelper) {
         return new RemindBeforeDueAgent(prefs, notifHelper);
     }
 
-    @Provides
+    @Provides @Singleton
     RemindAtDueAgent provideRemindAtDueAgent(AtDuePrefs prefs, TodoistNotifHelper notifHelper) {
         return new RemindAtDueAgent(prefs, notifHelper);
     }
 
-    @Provides
+    @Provides @Singleton
     ReminderManager provideReminderManager(
         AppReminderManager appReminderManager,
         RemindBeforeDueAgent beforeDueAgent,

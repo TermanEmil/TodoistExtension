@@ -13,6 +13,8 @@ import com.university.unicornslayer.todoistextension.ui.main.MainActivity;
 import com.university.unicornslayer.todoistextension.ui.main.MainMvpView;
 import com.university.unicornslayer.todoistextension.utils.alarms.AppScheduleManager;
 import com.university.unicornslayer.todoistextension.utils.alarms.ScheduleManager;
+import com.university.unicornslayer.todoistextension.utils.app_updates.AppUpdater;
+import com.university.unicornslayer.todoistextension.utils.app_updates.github_updater.GithubUpdateManager;
 import com.university.unicornslayer.todoistextension.utils.files.AppFileIOHelper;
 import com.university.unicornslayer.todoistextension.utils.files.FileIOHelper;
 import com.university.unicornslayer.todoistextension.utils.permissions.AppPermissionsHelper;
@@ -41,4 +43,7 @@ public interface AppBindingsModule {
 
     @Binds
     PermissionsHelper bindPermissionsHelper(AppPermissionsHelper t);
+
+    @Binds
+    AppUpdater bindAppUpdater(GithubUpdateManager t);
 }

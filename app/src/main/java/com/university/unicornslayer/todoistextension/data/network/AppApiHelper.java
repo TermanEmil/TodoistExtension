@@ -6,7 +6,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.OkHttpResponseListener;
-import com.university.unicornslayer.todoistextension.utils.RawItemsUtils;
+import com.university.unicornslayer.todoistextension.utils.todoist_common.TodoistItemsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,7 +90,7 @@ public class AppApiHelper implements ApiHelper {
                 public void onResponse(JSONObject response) {
                     try {
                         JSONArray jsonArray = response.getJSONArray("items");
-                        listener.onResponse(RawItemsUtils.extractItems(jsonArray));
+                        listener.onResponse(TodoistItemsUtils.extractItems(jsonArray));
                     } catch (JSONException e) {
                         listener.onError(-1);
                     }
