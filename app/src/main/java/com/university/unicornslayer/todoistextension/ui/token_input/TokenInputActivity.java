@@ -21,7 +21,6 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
     @BindView(R.id.token_submit_btn) Button tokenSubmitBtn;
 
     private TokenInputPresenter presenter;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +33,12 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
         presenter.onCreate();
 
         setupActionBar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        enableUserInput();
     }
 
     private void setupActionBar() {
@@ -59,32 +64,8 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
         presenter.onSubmitTokenPressed();
     }
 
-    private ProgressDialog buildValidationProgressDialog() {
-        ProgressDialog spinner = new ProgressDialog(this);
-        spinner.setMessage(getString(R.string.spinner_msg_token_validation));
-        spinner.setTitle(getString(R.string.spinner_title_token_validation));
-        spinner.setIndeterminate(false);
-        spinner.setCancelable(true);
-
-        spinner.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) { presenter.cancelTokenValidation(); }
-        });
-
-        return spinner;
-    }
-
     private void toastMsg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
     }
 
     @Override
@@ -104,10 +85,11 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
 
     @Override
     public void showRequestIsBeingProcessed() {
-        if (progressDialog == null)
-            progressDialog = buildValidationProgressDialog();
-
-        progressDialog.show();
+        showProgressDialog(
+            getString(R.string.spinner_title_token_validation),
+            getString(R.string.spinner_msg_token_validation),
+            dialog -> presenter.cancelTokenValidation()
+        );
     }
 
     @Override
@@ -142,7 +124,6 @@ public class TokenInputActivity extends BaseActivity implements TokenInputMvpVie
 
     @Override
     public void hideRequestIsBeingProcessed() {
-        if (progressDialog != null)
-            progressDialog.hide();
+        dismissProgressDialog();
     }
 }

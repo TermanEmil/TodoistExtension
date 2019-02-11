@@ -10,4 +10,8 @@ public interface MainMvpView {
     void showFailedToGetItems();
 
     void gotoSettingsView();
+
+    void showCheckingReminders();
+
+    void hideCheckingReminders();
 }

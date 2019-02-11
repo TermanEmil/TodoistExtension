@@ -107,12 +107,13 @@
     <string name="msg_download_canceled">Download canceled</string>
     <string name="error_failed_to_install">Failed to install</string>
     <string name="error_server_not_found">Failed. Server not found</string>
-    <string name="error_failed_to_check_for_updates">Failed to check for updated</string>
+    <string name="error_failed_to_check_for_updates">Failed to check for updates</string>
     <string name="error_server_provided_invalid_info">Server provided invalid information</string>
     <string name="msg_no_updates_available">No updates are available</string>
     <string name="alert_dialog_title_download_new_version">A new version is available. Download it?</string>
     <string name="title_progress_dialog_checking_for_updates">Checking for updates</string>
     <string name="msg_progress_dialog_please_wait">Please wait</string>
     <string name="title_progress_dialog_downloading">Downloading</string>
+    <string name="title_progress_dialog_checking_reminders">Checking reminders</string>
 
 </resources>

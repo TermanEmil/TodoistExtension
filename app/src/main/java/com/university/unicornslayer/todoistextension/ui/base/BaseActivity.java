@@ -16,7 +16,8 @@ import com.university.unicornslayer.todoistextension.di.module.AppModule;
 
 public abstract class BaseActivity extends AppCompatActivity {
     private AppComponent appComponent;
-    protected ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
+    private AlertDialog yesNoDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,6 +25,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         appComponent = DaggerAppComponent.builder()
             .appModule(new AppModule(this, this))
             .build();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dismissProgressDialog();
+        dismissYesNoDialog();
     }
 
     public AppComponent getDagger() {
@@ -39,8 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void showProgressDialog(String title, String msg, ProgressDialog.OnCancelListener listener) {
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        dismissProgressDialog();
 
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
@@ -61,12 +68,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
+    protected void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
     protected void showYesNoDialog(String msg, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
             .setMessage(msg)
             .setPositiveButton("Yes", listener)
             .setNegativeButton("No", listener);
 
-        builder.show();
+        yesNoDialog = builder.show();
+    }
+
+    protected void dismissYesNoDialog() {
+        if (yesNoDialog != null && yesNoDialog.isShowing())
+            yesNoDialog.dismiss();
     }
 }

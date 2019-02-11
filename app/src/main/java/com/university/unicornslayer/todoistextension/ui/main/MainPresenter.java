@@ -51,8 +51,9 @@ public class MainPresenter {
     }
 
     public void onCheckRemindersBtnPressed() {
-        scheduleManager.setRepeatingAlarm();
         apiHelper.setToken(tokenPrefHelper.getToken());
+
+        view.showCheckingReminders();
         apiHelper.getAllItems(new GetAllItemsListener());
     }
 
@@ -70,6 +71,8 @@ public class MainPresenter {
                 view.showFailedToPostNotifications();
             }
 
+            view.hideCheckingReminders();
+
             NextReminderModel nextToRemind = reminderManager.getNextItemToRemind(items);
             if (nextToRemind == null) {
                 return;
@@ -80,6 +83,8 @@ public class MainPresenter {
 
         @Override
         public void onError(int errorCode) {
+            view.hideCheckingReminders();
+
             switch (errorCode) {
                 case HttpURLConnection.HTTP_UNAVAILABLE:
                     view.showServiceUnavailableError();

@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
     protected void onResume() {
         super.onResume();
         presenter.onResume();
+        enableInput();
     }
 
     @Override
@@ -97,8 +98,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
 
     @Override
     public void dismissDownloading() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        dismissProgressDialog();
     }
 
     @Override
@@ -116,8 +116,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
 
     @Override
     public void dismissCheckingForUpdates() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        dismissProgressDialog();
     }
 
     @Override
@@ -173,6 +172,19 @@ public class MainActivity extends BaseActivity implements MainMvpView, AppUpdate
     public void gotoSettingsView() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showCheckingReminders() {
+        showProgressDialog(
+            getString(R.string.title_progress_dialog_checking_reminders),
+            getString(R.string.msg_progress_dialog_please_wait),
+            null);
+    }
+
+    @Override
+    public void hideCheckingReminders() {
+        dismissProgressDialog();
     }
 
     public void onCheckRemindersBtnPressed(View view) {
